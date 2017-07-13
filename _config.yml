@@ -5,14 +5,14 @@
 # Site
 title: 灯火阑珊
 subtitle:
-description:
-author: isandboy
+description: 浮生千山路，最终走到有你的时光
+author: 烟雨
 language: zh-Hans
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://isandboy.github.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -48,6 +48,13 @@ default_category: uncategorized
 category_map:
 tag_map:
 
+# search
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
+
 # Date / Time format
 ## Hexo uses Moment.js to parse and display date
 ## You can customize the date format as defined in
@@ -63,7 +70,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: fexo
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
