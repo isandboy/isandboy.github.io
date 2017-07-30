@@ -173,4 +173,4 @@ pod 'SYAlipaySDK'
 ```
 否则会出现和该库冲突的问题。这三个SDK里面分别对应集成了相应的官方SDK，并且支持打包成动态库。
 
-该库可以用于Objective-C、swift工具，并支持打包成动态库。
+该库可以用于Objective-C、swift工程，并支持打包成动态库。
