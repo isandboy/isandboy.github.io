@@ -1,5 +1,6 @@
 ---
 title: Cocoapods 使用
+date: 2017-05-01 08:24:00
 ---
 
 ## 简介
@@ -32,6 +33,8 @@ NOTE：一般国内用户安装失败，是因为ruby源问题。因为ruby的�
 作为一名开发者，推荐使用**第二种**方式
 
 当cocoapods安装后，可以通过`pod --version`命令来查看当前安装的cocoapods版本
+
+其他问题可参考：[安装CocoaPods遇到的问题及解决办法](安装CocoaPods遇到的问题及解决办法)
 
 ## 使用
 

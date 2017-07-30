@@ -78,4 +78,4 @@ deploy:
   type: git
   repository: https://github.com/isandboy/isandboy.github.io.git
   branch: master
-  message: Cocoapods使用
+  message: dynamic framework

@@ -1,5 +1,6 @@
 ---
 title: Cocoapods创建私有库
+date: 2017-05-01 08:24:00
 ---
 
 这篇文章主要是介绍怎么去创建和维护一个Cocoapods
@@ -18,7 +19,7 @@ pod lib create MyLirary
 NOTE: 如果你想要使用你自己的**pod-template**去创建Pod库，你可以在上面的命令后面追加`--template-url=url`参数，其中url是你的git repo库地址。
 如果不追加参数默认拉取的模板地址是https://github.com/CocoaPods/pod-template
 
-敲入以上命令回车后，会让你回答几个问题，安装提示填入就行。
+敲入以上命令回车后，会让你回答几个问题，按照提示填入就行。
 
 创建Project之后会，会自动运行`pod install`命令，让我们来看看Cocoapods给我们生成的文件目录结构
 
@@ -60,6 +61,8 @@ $ tree MyLib -L 2
 请参考：
 1. http://www.tuicool.com/articles/6FF7fi
 2. https://guides.cocoapods.org/making/getting-setup-with-trunk.html
+
+说明：关于 `.podspec` 文件的写法说明也可以参考[CocoaPods学习系列4——进阶用法](http://www.cnblogs.com/ALongWay/p/6541289.html)
 
 ## Private Pods
 
