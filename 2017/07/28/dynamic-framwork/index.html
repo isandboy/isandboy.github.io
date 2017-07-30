@@ -91,7 +91,7 @@
 <meta property="og:site_name" content="灯火阑珊">
 <meta property="og:description" content="问题在swift工程里面，如果是通过pod去管理公有库，或者团队里面的私有库。需要在Podfile文件里面加入use_frameworks! 但一般的工程里面都要依赖于支付宝、微信等第三方SDK，有些第三方SDK是静态库。如果是通过Pod 直接引入该静态库，如果只是一级依赖，pod install/update 是可以通过，如果是有多级依赖，执行上面命令就会出现如下错误信息1[!] The &amp;ap">
 <meta property="og:image" content="http://isandboy.github.io/img/dynamic01.jpeg">
-<meta property="og:updated_time" content="2017-07-30T03:24:06.000Z">
+<meta property="og:updated_time" content="2017-07-30T03:36:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="dynamic framwork">
 <meta name="twitter:description" content="问题在swift工程里面，如果是通过pod去管理公有库，或者团队里面的私有库。需要在Podfile文件里面加入use_frameworks! 但一般的工程里面都要依赖于支付宝、微信等第三方SDK，有些第三方SDK是静态库。如果是通过Pod 直接引入该静态库，如果只是一级依赖，pod install/update 是可以通过，如果是有多级依赖，执行上面命令就会出现如下错误信息1[!] The &amp;ap">
@@ -293,7 +293,8 @@
       
         <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>在swift工程里面，如果是通过pod去管理公有库，或者团队里面的私有库。需要在<code>Podfile</code>文件里面加入<code>use_frameworks!</code></p>
 <p>但一般的工程里面都要依赖于支付宝、微信等第三方SDK，有些第三方SDK是静态库。<br>如果是通过Pod 直接引入该静态库，如果只是一级依赖，<code>pod install/update</code> 是可以通过，如果是有多级依赖，执行上面命令就会出现如下错误信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[!] The &apos;xxxxx&apos; target has transitive dependencies that include static binaries:</div></pre></td></tr></table></figure></p>
-<p>正确打包出来的动态库，应该像这样。打开Product/xxxx.app -&gt; Frameworks 文件夹，如下图所示:<br><img src="/img/dynamic01.jpeg" alt="Alt text"></p>
+<p>正确打包出来的动态库，应该像这样。打开Product/xxxx.app -&gt; Frameworks 文件夹，如下图所示:</p>
+<p><img src="/img/dynamic01.jpeg" alt="Alt text"></p>
 <h2 id="原理见参考"><a href="#原理见参考" class="headerlink" title="原理见参考"></a>原理见参考</h2><h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><ol>
 <li>通过<code>pod lib create LibraryName</code> 命令创建</li>
 <li>把静态库放到你开发的库里面</li>
@@ -349,10 +350,27 @@
 
     <div class="post-spread">
       
-        
-<script>
-  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
 </script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
 
       
     </div>
@@ -403,7 +421,7 @@
                src="/images/avatar.gif"
                alt="烟雨" />
           <p class="site-author-name" itemprop="name">烟雨</p>
-          <p class="site-description motion-element" itemprop="description">浮生千山路，最终走到有你的时光</p>
+          <p class="site-description motion-element" itemprop="description">那年今日，烟雨楼阁。</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
