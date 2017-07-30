@@ -14,6 +14,7 @@ tags:
 [!] The 'xxxxx' target has transitive dependencies that include static binaries:
 ```
 正确打包出来的动态库，应该像这样。打开Product/xxxx.app -> Frameworks 文件夹，如下图所示:
+
 ![Alt text](/img/dynamic01.jpeg)
 
 ## 原理见参考

@@ -5,7 +5,7 @@
 # Site
 title: 灯火阑珊
 subtitle:
-description: 浮生千山路，最终走到有你的时光
+description: 那年今日，烟雨楼阁。
 author: 烟雨
 language: zh-Hans
 timezone:
@@ -78,4 +78,4 @@ deploy:
   type: git
   repository: https://github.com/isandboy/isandboy.github.io.git
   branch: master
-  message: dynamic framework
+  message: SYPayKit简介
