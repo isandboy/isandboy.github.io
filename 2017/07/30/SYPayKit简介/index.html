@@ -90,7 +90,7 @@
 <meta property="og:url" content="http://isandboy.github.io/2017/07/30/SYPayKit简介/index.html">
 <meta property="og:site_name" content="灯火阑珊">
 <meta property="og:description" content="问题一款产品，随着版本的迭代，难免会加入支付功能。而现在的主流支付方式，主要有支付宝、微信、银联支付、苹果银联支付等。每家支付SDK提供的对外接口不统一，会引起使用起来的混乱，以及维护成本的增加。比如，在支付成功后由第三方app回调回来：123456789101112131415161718192021- (BOOL)application:(UIApplication *)application">
-<meta property="og:updated_time" content="2017-07-30T09:28:49.000Z">
+<meta property="og:updated_time" content="2017-07-30T09:38:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SYPayKit简介">
 <meta name="twitter:description" content="问题一款产品，随着版本的迭代，难免会加入支付功能。而现在的主流支付方式，主要有支付宝、微信、银联支付、苹果银联支付等。每家支付SDK提供的对外接口不统一，会引起使用起来的混乱，以及维护成本的增加。比如，在支付成功后由第三方app回调回来：123456789101112131415161718192021- (BOOL)application:(UIApplication *)application">
@@ -335,7 +335,7 @@
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>iOS 9 以上版本如果需要使用支付宝和微信渠道，需要在 Info.plist 添加以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;key&gt;LSApplicationQueriesSchemes&lt;/key&gt;</div><div class="line">&lt;array&gt;</div><div class="line">    &lt;string&gt;weixin&lt;/string&gt;</div><div class="line">    &lt;string&gt;wechat&lt;/string&gt;</div><div class="line">    &lt;string&gt;alipay&lt;/string&gt;</div><div class="line">&lt;/array&gt;</div></pre></td></tr></table></figure></p>
 <p>如果项目里面还用到了支付宝、微信、银联支付的SDK，请使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pod &apos;WechatOpenSDK&apos;</div><div class="line">pod &apos;SYUPPaySDK&apos;</div><div class="line">pod &apos;SYAlipaySDK&apos;</div></pre></td></tr></table></figure></p>
 <p>否则会出现和该库冲突的问题。这三个SDK里面分别对应集成了相应的官方SDK，并且支持打包成动态库。</p>
-<p>该库可以用于Objective-C、swift工具，并支持打包成动态库。</p>
+<p>该库可以用于Objective-C、swift工程，并支持打包成动态库。</p>
 
       
     </div>
