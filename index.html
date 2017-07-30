@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next mist use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -84,20 +84,23 @@
 
 
 
+<meta name="description" content="浮生千山路，最终走到有你的时光">
 <meta property="og:type" content="website">
 <meta property="og:title" content="灯火阑珊">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://isandboy.github.io/index.html">
 <meta property="og:site_name" content="灯火阑珊">
+<meta property="og:description" content="浮生千山路，最终走到有你的时光">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="灯火阑珊">
+<meta name="twitter:description" content="浮生千山路，最终走到有你的时光">
 
 
 
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Muse',
-    sidebar: {"position":"left","display":"post"},
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -110,7 +113,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://isandboy.github.io/"/>
 
   <title> 灯火阑珊 </title>
 </head>
@@ -186,16 +189,6 @@
           </a>
         </li>
       
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
 
       
         <li class="menu-item menu-item-search">
@@ -258,8 +251,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/12/Making-Cocoapods/" itemprop="url">
-                  Cocoapods创建私有库
+                <a class="post-title-link" href="/2017/07/28/dynamic-framwork/" itemprop="url">
+                  dynamic framwork
                 </a>
               
             
@@ -272,8 +265,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-07-12T23:21:15+08:00" content="2017-07-12">
-              2017-07-12
+            <time itemprop="dateCreated" datetime="2017-07-28T23:42:27+08:00" content="2017-07-28">
+              2017-07-28
             </time>
           </span>
 
@@ -302,52 +295,18 @@
       
         
           
-            <p>这篇文章主要是介绍怎么去创建和维护一个Cocoapods</p>
-<ol>
-<li>Using Pod Lib Create</li>
-<li>Getting setup with Trunk</li>
+            <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>在swift工程里面，如果是通过pod去管理公有库，或者团队里面的私有库。需要在<code>Podfile</code>文件里面加入<code>use_frameworks!</code></p>
+<p>但一般的工程里面都要依赖于支付宝、微信等第三方SDK，有些第三方SDK是静态库。<br>如果是通过Pod 直接引入该静态库，如果只是一级依赖，<code>pod install/update</code> 是可以通过，如果是有多级依赖，执行上面命令就会出现如下错误信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[!] The &apos;xxxxx&apos; target has transitive dependencies that include static binaries:</div></pre></td></tr></table></figure></p>
+<p>正确打包出来的动态库，应该像这样。打开Product/xxxx.app -&gt; Frameworks 文件夹，如下图所示:<br><img src="/img/dynamic01.jpeg" alt="Alt text"></p>
+<h2 id="原理见参考"><a href="#原理见参考" class="headerlink" title="原理见参考"></a>原理见参考</h2><h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><ol>
+<li>通过<code>pod lib create LibraryName</code> 命令创建</li>
+<li>把静态库放到你开发的库里面</li>
+<li>如果当前开发的库里面，除了静态库/动态库（假的）和头文件外，没有其他文件，你需要随便创建个类，否则不行，如果有其他方式一块交流</li>
+<li>关于如果<code>.podspec</code>文件的写法，可以参考:<a href="https://github.com/isandboy/SYAlipaySDK" target="_blank" rel="external">https://github.com/isandboy/SYAlipaySDK</a></li>
 </ol>
-<h2 id="Getting-setup-with-Trunk"><a href="#Getting-setup-with-Trunk" class="headerlink" title="Getting setup with Trunk"></a>Getting setup with Trunk</h2><p>使用Pod创建库，打开终端敲入以下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod lib create MyLirary</div></pre></td></tr></table></figure>
-<p>NOTE: 如果你想要使用你自己的<strong>pod-template</strong>去创建Pod库，你可以在上面的命令后面追加<code>--template-url=url</code>参数，其中url是你的git repo库地址。<br>如果不追加参数默认拉取的模板地址是<a href="https://github.com/CocoaPods/pod-template" target="_blank" rel="external">https://github.com/CocoaPods/pod-template</a></p>
-<p>敲入以上命令回车后，会让你回答几个问题，安装提示填入就行。</p>
-<p>创建Project之后会，会自动运行<code>pod install</code>命令，让我们来看看Cocoapods给我们生成的文件目录结构</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">$ tree MyLib -L 2</div><div class="line"></div><div class="line">  MyLib</div><div class="line">  ├── .travis.yml</div><div class="line">  ├── _Pods.xcproject</div><div class="line">  ├── Example</div><div class="line">  │   ├── MyLib</div><div class="line">  │   ├── MyLib.xcodeproj</div><div class="line">  │   ├── MyLib.xcworkspace</div><div class="line">  │   ├── Podfile</div><div class="line">  │   ├── Podfile.lock</div><div class="line">  │   ├── Pods</div><div class="line">  │   └── Tests</div><div class="line">  ├── LICENSE</div><div class="line">  ├── MyLib.podspec</div><div class="line">  ├── Pod</div><div class="line">  │   ├── Assets</div><div class="line">  │   └── Classes</div><div class="line">  │     └── RemoveMe.[swift/m]</div><div class="line">  └── README.md</div></pre></td></tr></table></figure>
-<ul>
-<li>.travis.yml - 一个travis-ci配置文件.</li>
-<li>_Pods.xcproject - 支持Carthage的对你Pod’s Project的链接.</li>
-<li>LICENSE - 默认是 MIT License.</li>
-<li>MyLib.podspec - 你的Library的配置文件.</li>
-<li>README.md - a default README in markdown.</li>
-<li>RemoveMe.swift/m - 无用文件删除即可.</li>
-<li>Pod - 放置你的库代码和资源的文件夹</li>
-<li>Example - Demo，方便你去调试你的库</li>
-</ul>
-<h2 id="Getting-setup-with-Trunk-1"><a href="#Getting-setup-with-Trunk-1" class="headerlink" title="Getting setup with Trunk"></a>Getting setup with Trunk</h2><p>关于怎么发布自己的Pods到Cocoapods trunk，</p>
-<p>请参考：</p>
-<ol>
-<li><a href="http://www.tuicool.com/articles/6FF7fi" target="_blank" rel="external">http://www.tuicool.com/articles/6FF7fi</a></li>
-<li><a href="https://guides.cocoapods.org/making/getting-setup-with-trunk.html" target="_blank" rel="external">https://guides.cocoapods.org/making/getting-setup-with-trunk.html</a></li>
-</ol>
-<h2 id="Private-Pods"><a href="#Private-Pods" class="headerlink" title="Private Pods"></a>Private Pods</h2><p><strong><em>1. Create a Private Spec Repo</em></strong><br>参考：<a href="https://guides.cocoapods.org/making/private-cocoapods.html" target="_blank" rel="external">https://guides.cocoapods.org/making/private-cocoapods.html</a></p>
-<h2 id="私有远端仓库"><a href="#私有远端仓库" class="headerlink" title="私有远端仓库"></a>私有远端仓库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
-<p>##</p>
-<p>待修改</p>
-<h2 id="验证podspec有效性"><a href="#验证podspec有效性" class="headerlink" title="验证podspec有效性"></a>验证podspec有效性</h2><p>当开发完私有库之后，把配置库，提交到私有创库，或者cocoapods的公有库仓库，流程如下</p>
-<p><strong><em>1. 本地验证仓库有效性</em></strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod lib lint --source --use-libraries --allow-warnings --verbose</div></pre></td></tr></table></figure>
-<p>其中pod lib lint 之后的参数都是可选参数</p>
-<ul>
-<li>–source：当开发私有库的时候，</li>
-<li>–use-libraries: podspec文件里面通过pod dependencies指定的依赖，是否包含静态库，当不加此参数会验证失败。因为swift开发的库，不能包含静态库，所以此参数只针对Objective-C</li>
-<li>–allow-warnings：是否忽略警告。</li>
-<li>–verbose：详细log</li>
-</ul>
-<p><strong><em>2. 提交代码</em></strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">git add .</div><div class="line">git ci -m&quot;edit commit message&quot;</div><div class="line">git tag 0.1.0</div><div class="line">git push origin master tags</div></pre></td></tr></table></figure>
-<p><strong><em>3. 推送podspec配置文件到私有库</em></strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod repo push SYSpecs [MyLib.podspec] --use-libraries --allow-warnings --verbose</div></pre></td></tr></table></figure>
-<p>其中参数与验证参数一个含义，验证的时候加了哪些可选参数，推送配置文件到私有库的时候也要加</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>当没有使用到第三方静态库中的相关API时，链接器帮我们链接动态库的时候可能并不会把静态库吸附进来。我们手动在build Setting的other link flags加上-all_load标记</p>
+<p>如果是通过 <code>pod lib create</code> 命令去创建模块，可以在<code>.podspec</code> 文件里面加入如下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">spec.pod_target_xcconfig = &#123; &apos;OTHER_LDFLAGS&apos; =&gt; &apos;-all_load&apos; &#125;</div></pre></td></tr></table></figure></p>
+<h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p><a href="http://www.cocoachina.com/ios/20170427/19136.html" target="_blank" rel="external">组件化-动态库实战</a></p>
 
           
         
@@ -397,7 +356,102 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/12/Cocoapods 使用/" itemprop="url">
+                <a class="post-title-link" href="/2017/07/28/Linux-Common-Commands/" itemprop="url">
+                  Linux 常用命令
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-28T23:33:18+08:00" content="2017-07-28">
+              2017-07-28
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Linux下查看端口号所使用的进程号："><a href="#Linux下查看端口号所使用的进程号：" class="headerlink" title="Linux下查看端口号所使用的进程号："></a>Linux下查看端口号所使用的进程号：</h2><p>使用lsof命令： lsof –i:端口号</p>
+<h2 id="Linux下查看进程占用端口"><a href="#Linux下查看进程占用端口" class="headerlink" title="Linux下查看进程占用端口:"></a>Linux下查看进程占用端口:</h2><p>查看程序对应进程号：ps –ef|grep 进程名</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/01/Cocoapods 使用/" itemprop="url">
                   Cocoapods 使用
                 </a>
               
@@ -411,8 +465,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-07-12T23:21:15+08:00" content="2017-07-12">
-              2017-07-12
+            <time itemprop="dateCreated" datetime="2017-05-01T08:24:00+08:00" content="2017-05-01">
+              2017-05-01
             </time>
           </span>
 
@@ -454,6 +508,7 @@
 </ol>
 <p>作为一名开发者，推荐使用<strong>第二种</strong>方式</p>
 <p>当cocoapods安装后，可以通过<code>pod --version</code>命令来查看当前安装的cocoapods版本</p>
+<p>其他问题可参考：<a href="安装CocoaPods遇到的问题及解决办法">安装CocoaPods遇到的问题及解决办法</a></p>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
 <li>使用terminal切换到你的project目录</li>
 <li>创建一个Podfile文件，你可以使用<code>touch Podfile</code>创建，但是有一种更为优雅的方式，通过在terminal执行<code>pod init</code>命令</li>
@@ -541,7 +596,147 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/12/hello-world/" itemprop="url">
+                <a class="post-title-link" href="/2017/05/01/Making-Cocoapods/" itemprop="url">
+                  Cocoapods创建私有库
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-01T08:24:00+08:00" content="2017-05-01">
+              2017-05-01
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这篇文章主要是介绍怎么去创建和维护一个Cocoapods</p>
+<ol>
+<li>Using Pod Lib Create</li>
+<li>Getting setup with Trunk</li>
+</ol>
+<h2 id="Getting-setup-with-Trunk"><a href="#Getting-setup-with-Trunk" class="headerlink" title="Getting setup with Trunk"></a>Getting setup with Trunk</h2><p>使用Pod创建库，打开终端敲入以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod lib create MyLirary</div></pre></td></tr></table></figure>
+<p>NOTE: 如果你想要使用你自己的<strong>pod-template</strong>去创建Pod库，你可以在上面的命令后面追加<code>--template-url=url</code>参数，其中url是你的git repo库地址。<br>如果不追加参数默认拉取的模板地址是<a href="https://github.com/CocoaPods/pod-template" target="_blank" rel="external">https://github.com/CocoaPods/pod-template</a></p>
+<p>敲入以上命令回车后，会让你回答几个问题，按照提示填入就行。</p>
+<p>创建Project之后会，会自动运行<code>pod install</code>命令，让我们来看看Cocoapods给我们生成的文件目录结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">$ tree MyLib -L 2</div><div class="line"></div><div class="line">  MyLib</div><div class="line">  ├── .travis.yml</div><div class="line">  ├── _Pods.xcproject</div><div class="line">  ├── Example</div><div class="line">  │   ├── MyLib</div><div class="line">  │   ├── MyLib.xcodeproj</div><div class="line">  │   ├── MyLib.xcworkspace</div><div class="line">  │   ├── Podfile</div><div class="line">  │   ├── Podfile.lock</div><div class="line">  │   ├── Pods</div><div class="line">  │   └── Tests</div><div class="line">  ├── LICENSE</div><div class="line">  ├── MyLib.podspec</div><div class="line">  ├── Pod</div><div class="line">  │   ├── Assets</div><div class="line">  │   └── Classes</div><div class="line">  │     └── RemoveMe.[swift/m]</div><div class="line">  └── README.md</div></pre></td></tr></table></figure>
+<ul>
+<li>.travis.yml - 一个travis-ci配置文件.</li>
+<li>_Pods.xcproject - 支持Carthage的对你Pod’s Project的链接.</li>
+<li>LICENSE - 默认是 MIT License.</li>
+<li>MyLib.podspec - 你的Library的配置文件.</li>
+<li>README.md - a default README in markdown.</li>
+<li>RemoveMe.swift/m - 无用文件删除即可.</li>
+<li>Pod - 放置你的库代码和资源的文件夹</li>
+<li>Example - Demo，方便你去调试你的库</li>
+</ul>
+<h2 id="Getting-setup-with-Trunk-1"><a href="#Getting-setup-with-Trunk-1" class="headerlink" title="Getting setup with Trunk"></a>Getting setup with Trunk</h2><p>关于怎么发布自己的Pods到Cocoapods trunk，</p>
+<p>请参考：</p>
+<ol>
+<li><a href="http://www.tuicool.com/articles/6FF7fi" target="_blank" rel="external">http://www.tuicool.com/articles/6FF7fi</a></li>
+<li><a href="https://guides.cocoapods.org/making/getting-setup-with-trunk.html" target="_blank" rel="external">https://guides.cocoapods.org/making/getting-setup-with-trunk.html</a></li>
+</ol>
+<p>说明：关于 <code>.podspec</code> 文件的写法说明也可以参考<a href="http://www.cnblogs.com/ALongWay/p/6541289.html" target="_blank" rel="external">CocoaPods学习系列4——进阶用法</a></p>
+<h2 id="Private-Pods"><a href="#Private-Pods" class="headerlink" title="Private Pods"></a>Private Pods</h2><p><strong><em>1. Create a Private Spec Repo</em></strong><br>参考：<a href="https://guides.cocoapods.org/making/private-cocoapods.html" target="_blank" rel="external">https://guides.cocoapods.org/making/private-cocoapods.html</a></p>
+<h2 id="私有远端仓库"><a href="#私有远端仓库" class="headerlink" title="私有远端仓库"></a>私有远端仓库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+<p>##</p>
+<p>待修改</p>
+<h2 id="验证podspec有效性"><a href="#验证podspec有效性" class="headerlink" title="验证podspec有效性"></a>验证podspec有效性</h2><p>当开发完私有库之后，把配置库，提交到私有创库，或者cocoapods的公有库仓库，流程如下</p>
+<p><strong><em>1. 本地验证仓库有效性</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod lib lint --source --use-libraries --allow-warnings --verbose</div></pre></td></tr></table></figure>
+<p>其中pod lib lint 之后的参数都是可选参数</p>
+<ul>
+<li>–source：当开发私有库的时候，</li>
+<li>–use-libraries: podspec文件里面通过pod dependencies指定的依赖，是否包含静态库，当不加此参数会验证失败。因为swift开发的库，不能包含静态库，所以此参数只针对Objective-C</li>
+<li>–allow-warnings：是否忽略警告。</li>
+<li>–verbose：详细log</li>
+</ul>
+<p><strong><em>2. 提交代码</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">git add .</div><div class="line">git ci -m&quot;edit commit message&quot;</div><div class="line">git tag 0.1.0</div><div class="line">git push origin master tags</div></pre></td></tr></table></figure>
+<p><strong><em>3. 推送podspec配置文件到私有库</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod repo push SYSpecs [MyLib.podspec] --use-libraries --allow-warnings --verbose</div></pre></td></tr></table></figure>
+<p>其中参数与验证参数一个含义，验证的时候加了哪些可选参数，推送配置文件到私有库的时候也要加</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/01/hello-world/" itemprop="url">
                   Hello World
                 </a>
               
@@ -555,8 +750,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-07-12T23:21:15+08:00" content="2017-07-12">
-              2017-07-12
+            <time itemprop="dateCreated" datetime="2017-05-01T08:24:00+08:00" content="2017-05-01">
+              2017-05-01
             </time>
           </span>
 
@@ -656,14 +851,14 @@
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
-               alt="isandboy" />
-          <p class="site-author-name" itemprop="name">isandboy</p>
-          <p class="site-description motion-element" itemprop="description"></p>
+               alt="烟雨" />
+          <p class="site-author-name" itemprop="name">烟雨</p>
+          <p class="site-description motion-element" itemprop="description">浮生千山路，最终走到有你的时光</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -707,7 +902,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">isandboy</span>
+  <span class="author" itemprop="copyrightHolder">烟雨</span>
 </div>
 
 <div class="powered-by">
@@ -717,7 +912,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Mist
   </a>
 </div>
 
@@ -807,7 +1002,7 @@
     // Popup Window;
     var isfetched = false;
     // Search DB path;
-    var search_path = "search.json";
+    var search_path = "search.xml";
     if (search_path.length == 0) {
        search_path = "search.xml";
     }

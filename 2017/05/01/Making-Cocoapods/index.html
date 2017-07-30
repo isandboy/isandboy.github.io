@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next mist use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -87,10 +87,10 @@
 <meta name="description" content="这篇文章主要是介绍怎么去创建和维护一个Cocoapods  Using Pod Lib Create Getting setup with Trunk  Getting setup with Trunk使用Pod创建库，打开终端敲入以下命令： 1pod lib create MyLirary NOTE: 如果你想要使用你自己的pod-template去创建Pod库，你可以在上面的命令后面追加--t">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cocoapods创建私有库">
-<meta property="og:url" content="http://yoursite.com/2017/07/12/Making-Cocoapods/index.html">
+<meta property="og:url" content="http://isandboy.github.io/2017/05/01/Making-Cocoapods/index.html">
 <meta property="og:site_name" content="灯火阑珊">
 <meta property="og:description" content="这篇文章主要是介绍怎么去创建和维护一个Cocoapods  Using Pod Lib Create Getting setup with Trunk  Getting setup with Trunk使用Pod创建库，打开终端敲入以下命令： 1pod lib create MyLirary NOTE: 如果你想要使用你自己的pod-template去创建Pod库，你可以在上面的命令后面追加--t">
-<meta property="og:updated_time" content="2017-07-12T15:21:15.000Z">
+<meta property="og:updated_time" content="2017-07-28T16:28:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cocoapods创建私有库">
 <meta name="twitter:description" content="这篇文章主要是介绍怎么去创建和维护一个Cocoapods  Using Pod Lib Create Getting setup with Trunk  Getting setup with Trunk使用Pod创建库，打开终端敲入以下命令： 1pod lib create MyLirary NOTE: 如果你想要使用你自己的pod-template去创建Pod库，你可以在上面的命令后面追加--t">
@@ -100,8 +100,8 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Muse',
-    sidebar: {"position":"left","display":"post"},
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -114,7 +114,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/12/Making-Cocoapods/"/>
+  <link rel="canonical" href="http://isandboy.github.io/2017/05/01/Making-Cocoapods/"/>
 
   <title> Cocoapods创建私有库 | 灯火阑珊 </title>
 </head>
@@ -185,16 +185,6 @@
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
           </a>
         </li>
       
@@ -271,8 +261,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-07-12T23:21:15+08:00" content="2017-07-12">
-              2017-07-12
+            <time itemprop="dateCreated" datetime="2017-05-01T08:24:00+08:00" content="2017-05-01">
+              2017-05-01
             </time>
           </span>
 
@@ -307,7 +297,7 @@
 <h2 id="Getting-setup-with-Trunk"><a href="#Getting-setup-with-Trunk" class="headerlink" title="Getting setup with Trunk"></a>Getting setup with Trunk</h2><p>使用Pod创建库，打开终端敲入以下命令：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod lib create MyLirary</div></pre></td></tr></table></figure>
 <p>NOTE: 如果你想要使用你自己的<strong>pod-template</strong>去创建Pod库，你可以在上面的命令后面追加<code>--template-url=url</code>参数，其中url是你的git repo库地址。<br>如果不追加参数默认拉取的模板地址是<a href="https://github.com/CocoaPods/pod-template" target="_blank" rel="external">https://github.com/CocoaPods/pod-template</a></p>
-<p>敲入以上命令回车后，会让你回答几个问题，安装提示填入就行。</p>
+<p>敲入以上命令回车后，会让你回答几个问题，按照提示填入就行。</p>
 <p>创建Project之后会，会自动运行<code>pod install</code>命令，让我们来看看Cocoapods给我们生成的文件目录结构</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">$ tree MyLib -L 2</div><div class="line"></div><div class="line">  MyLib</div><div class="line">  ├── .travis.yml</div><div class="line">  ├── _Pods.xcproject</div><div class="line">  ├── Example</div><div class="line">  │   ├── MyLib</div><div class="line">  │   ├── MyLib.xcodeproj</div><div class="line">  │   ├── MyLib.xcworkspace</div><div class="line">  │   ├── Podfile</div><div class="line">  │   ├── Podfile.lock</div><div class="line">  │   ├── Pods</div><div class="line">  │   └── Tests</div><div class="line">  ├── LICENSE</div><div class="line">  ├── MyLib.podspec</div><div class="line">  ├── Pod</div><div class="line">  │   ├── Assets</div><div class="line">  │   └── Classes</div><div class="line">  │     └── RemoveMe.[swift/m]</div><div class="line">  └── README.md</div></pre></td></tr></table></figure>
 <ul>
@@ -326,6 +316,7 @@
 <li><a href="http://www.tuicool.com/articles/6FF7fi" target="_blank" rel="external">http://www.tuicool.com/articles/6FF7fi</a></li>
 <li><a href="https://guides.cocoapods.org/making/getting-setup-with-trunk.html" target="_blank" rel="external">https://guides.cocoapods.org/making/getting-setup-with-trunk.html</a></li>
 </ol>
+<p>说明：关于 <code>.podspec</code> 文件的写法说明也可以参考<a href="http://www.cnblogs.com/ALongWay/p/6541289.html" target="_blank" rel="external">CocoaPods学习系列4——进阶用法</a></p>
 <h2 id="Private-Pods"><a href="#Private-Pods" class="headerlink" title="Private Pods"></a>Private Pods</h2><p><strong><em>1. Create a Private Spec Repo</em></strong><br>参考：<a href="https://guides.cocoapods.org/making/private-cocoapods.html" target="_blank" rel="external">https://guides.cocoapods.org/making/private-cocoapods.html</a></p>
 <h2 id="私有远端仓库"><a href="#私有远端仓库" class="headerlink" title="私有远端仓库"></a>私有远端仓库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
 <p>##</p>
@@ -370,13 +361,17 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/12/Cocoapods 使用/" rel="next" title="Cocoapods 使用">
-                <i class="fa fa-chevron-left"></i> Cocoapods 使用
+              <a href="/2017/05/01/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/01/Cocoapods 使用/" rel="prev" title="Cocoapods 使用">
+                Cocoapods 使用 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -390,6 +385,12 @@
 
 
     <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
       
     </div>
   </div>
@@ -437,14 +438,14 @@
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
-               alt="isandboy" />
-          <p class="site-author-name" itemprop="name">isandboy</p>
-          <p class="site-description motion-element" itemprop="description"></p>
+               alt="烟雨" />
+          <p class="site-author-name" itemprop="name">烟雨</p>
+          <p class="site-description motion-element" itemprop="description">浮生千山路，最终走到有你的时光</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -499,7 +500,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">isandboy</span>
+  <span class="author" itemprop="copyrightHolder">烟雨</span>
 </div>
 
 <div class="powered-by">
@@ -509,7 +510,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Mist
   </a>
 </div>
 
@@ -603,7 +604,7 @@
     // Popup Window;
     var isfetched = false;
     // Search DB path;
-    var search_path = "search.json";
+    var search_path = "search.xml";
     if (search_path.length == 0) {
        search_path = "search.xml";
     }
