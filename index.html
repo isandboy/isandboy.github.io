@@ -251,6 +251,146 @@
             
               
                 
+                <a class="post-title-link" href="/2017/07/30/SYPayKit简介/" itemprop="url">
+                  SYPayKit简介
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-30T16:12:25+08:00" content="2017-07-30">
+              2017-07-30
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一款产品，随着版本的迭代，难免会加入支付功能。而现在的主流支付方式，主要有支付宝、微信、银联支付、苹果银联支付等。<br>每家支付SDK提供的对外接口不统一，会引起使用起来的混乱，以及维护成本的增加。<br>比如，在支付成功后由第三方app回调回来：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary&lt;UIApplicationOpenURLOptionsKey,id&gt; *)options &#123;</div><div class="line">    if ([[url absoluteString] rangeOfString:@&quot;wx&quot;].location != NSNotFound &amp;&amp;</div><div class="line">               [[url absoluteString] rangeOfString:@&quot;pay&quot;].location != NSNotFound) &#123;</div><div class="line">        return [WXApi handleOpenURL:url delegate:self];</div><div class="line">    &#125; else &#123;</div><div class="line">        /*其他支付方式的处理*/</div><div class="line">        if ([url.host isEqualToString:@&quot;safepay&quot;]) &#123;</div><div class="line">            [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) &#123;</div><div class="line">                /*处理resultDic*/</div><div class="line">            &#125;];</div><div class="line">            return YES;</div><div class="line">        &#125;</div><div class="line">        if ([url.host isEqualToString:@&quot;platformapi&quot;]) &#123;//支付宝钱包快登授权返回authCode</div><div class="line">            [[AlipaySDK defaultService] processAuthResult:url standbyCallback:^(NSDictionary *resultDic) &#123;</div><div class="line">                /*处理resultDic*/</div><div class="line">            &#125;];</div><div class="line">            return YES;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接口抽象统一后：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary&lt;UIApplicationOpenURLOptionsKey,id&gt; *)options &#123;</div><div class="line">    return [SYPay handleOpenURL:url sourceApplication:nil];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="支付流程"><a href="#支付流程" class="headerlink" title="支付流程"></a>支付流程</h2><ol>
+<li>进入支付页面</li>
+<li>选择支付方式</li>
+<li>根据当前支付方式去后台拉取订单，拉取成功后调起当前支付方式对应的app/走网页（如未安装支付宝客户端，银联等）</li>
+<li>在第三方app完成支付后，回调回来，去后台验证订单是否完成支付</li>
+</ol>
+<p>NOTE：目前一般的通用做法是支付页面是网页，由网页发起拉取订单的请求，订单部分是后台处理好的订单（web端和native端都不做任何处理），然后web端再把订单通过js交互告诉native端，再由native端调用第三方支付SDK发起支付，支付成功后再回调给web端。</p>
+<p>关于支付结果验证部分，目前我们这边是在web端去处理的，native端只负责调用第三方支付SDK，回调支付结果给web端</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><!-- 首先参考了 [Ping++聚合支付iOS接口设计](https://github.com/PingPlusPlus/pingpp-ios)
+
+做法上他们把各种支付方式的 -->
+<p>当去新加入/移除一种支付方式，不会对抽象出来的接口产生影响，也就是说不用做任何修改。</p>
+<p>所以就抽象出了一套协议，当新加入一种支付方式时候，只需要实现那套协议即可。</p>
+<p>目前的做法是：</p>
+<ol>
+<li><p>生成某种支付方式的实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SYUnionPay *alipay = [[SYUnionPay alloc] init];</div></pre></td></tr></table></figure>
+</li>
+<li><p>生成订单</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NSDictionary *order = @&#123;kMSPayOrderKey:@&quot;201506221028315777129&quot;&#125;;</div></pre></td></tr></table></figure>
+</li>
+<li><p>发起支付</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[SYPay payment:payment withOrderInfo:order withCompletion:^(SYPayResultStatus status, NSDictionary * _Nullable returnedInfo, NSError * _Nullable error) &#123;</div><div class="line">    NSLog(@&quot;success:%d\n,resultDic:%@\n,error:%@&quot;, success, returnedInfo, [error localizedDescription]);</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>NOTE: 有的做法是把支付方式，放到生成的订单字典里面，由此去区分是哪种支付方式如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NSDictionary *order = @&#123;kMSPayOrderKey:@&quot;201506221028315777129&quot;, @&quot;payType&quot;: @&quot;alipay&quot;&#125;;</div></pre></td></tr></table></figure></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>安装：目前还处于测试阶段，所以版本还未固定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod &quot;SYPayKit&quot;, :git =&gt; &apos;https://github.com/isandboy/SYPayKit&apos;</div></pre></td></tr></table></figure></p>
+<p>默认包含支付宝、微信、银联支付</p>
+<p>目前支持以下几种支付方式</p>
+<p>Alipay （支付宝）</p>
+<p>WXPay（微信）</p>
+<p>UnionPay（银联）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pod &apos;SYPayKit/Alipay&apos;</div><div class="line">pod &apos;SYPayKit/WXPay&apos;</div><div class="line">pod &apos;SYPayKit/UnionPay&apos;</div></pre></td></tr></table></figure>
+<p>调用部分<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SYUnionPay *alipay = [[SYUnionPay alloc] init];</div><div class="line">NSDictionary *order = @&#123;kMSPayOrderKey:@&quot;201506221028315777129&quot;&#125;;</div><div class="line">[SYPay payment:payment withOrderInfo:nil withCompletion:^(SYPayResultStatus status, NSDictionary * _Nullable returnedInfo, NSError * _Nullable error) &#123;</div><div class="line">    NSLog(@&quot;success:%d\n,resultDic:%@\n,error:%@&quot;, success, returnedInfo, [error localizedDescription]);</div><div class="line">&#125;];</div></pre></td></tr></table></figure></p>
+<p>接口参数说明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> *  支付调用接口</div><div class="line"> *</div><div class="line"> *  @param charge           以kSYPayOrderKey为key的订单，对应的value为格式参考readme说明文档</div><div class="line"> *  @param viewController   银联渠道需要</div><div class="line"> *  @param completionBlock  支付结果回调 Block</div><div class="line"> */</div><div class="line">+ (void)payment:(SYPayment *)payment withOrderInfo:(NSDictionary *)charge viewController:(nullable UIViewController *)viewController withCompletion:(SYPayResultHandle)handle;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>其中payment是对应的支付方式的实例</li>
+<li>charge参数需要和后台约定成以下格式</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># 支付宝支付order</div><div class="line">&#123;</div><div class="line">		kSYPayOrderKey: &quot;partner=\&quot;--------------\&quot;&amp;seller_id=\&quot;-------------\&quot;&amp;out_trade_no=\&quot;-----------\&quot;&amp;subject=\&quot;areyouok\&quot;&amp;body=\&quot;nama\&quot;&amp;total_fee=\&quot;0.01\&quot;&amp;notify_url=\&quot;&quot;&amp;service=\&quot;\&quot;&amp;payment_type=\&quot;1\&quot;&amp;_input_charset=\&quot;utf-8\&quot;&amp;it_b_pay=\&quot;30m\&quot;&amp;sign=\&quot;GsSZgPloF1vn52XAItRAldwQAbzIgkDyByCxMfTZG%2FMapRoyrNIJo4U1LUGjHp6gdBZ7U8jA1kljLPqkeGv8MZigd3kH25V0UK3Jc3C94Ngxm5S%2Fz5QsNr6wnqNY9sx%2Bw6DqNdEQnnks7PKvvU0zgsynip50lAhJmflmfHvp%2Bgk%3D\&quot;&amp;sign_type=\&quot;RSA\&quot;&amp;appenv=\&quot;system= ^version=\&quot;&amp;goods_type=\&quot;0\&quot;&amp;rn_check=\&quot;F\&quot;&quot;</div><div class="line">  &#125;</div><div class="line"></div><div class="line"># 微信支付order</div><div class="line"></div><div class="line">&#123; kSYPayOrderKey: &#123;</div><div class="line">			&quot;appid&quot;: &quot;wx-----------&quot;,</div><div class="line">			&quot;partnerid&quot;: &quot;-----------&quot;,</div><div class="line">			&quot;noncestr&quot;: &quot;-----------&quot;,</div><div class="line">			&quot;prepayid&quot;: &quot;wx-----------&quot;,</div><div class="line">			&quot;packagevalue&quot;: &quot;Sign=WXPay&quot;,</div><div class="line">			&quot;timestamp&quot;: &quot;-----------&quot;,</div><div class="line">			&quot;sign&quot;: &quot;-----------&quot;</div><div class="line">		&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"># 银联支付order</div><div class="line">&#123;kSYPayOrderKey:@&quot;--------------------&quot; &#125;</div></pre></td></tr></table></figure>
+<p>更详细的情况可以参考demo里面的SYPayManager类</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>iOS 9 以上版本如果需要使用支付宝和微信渠道，需要在 Info.plist 添加以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;key&gt;LSApplicationQueriesSchemes&lt;/key&gt;</div><div class="line">&lt;array&gt;</div><div class="line">    &lt;string&gt;weixin&lt;/string&gt;</div><div class="line">    &lt;string&gt;wechat&lt;/string&gt;</div><div class="line">    &lt;string&gt;alipay&lt;/string&gt;</div><div class="line">&lt;/array&gt;</div></pre></td></tr></table></figure></p>
+<p>如果项目里面还用到了支付宝、微信、银联支付的SDK，请使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pod &apos;WechatOpenSDK&apos;</div><div class="line">pod &apos;SYUPPaySDK&apos;</div><div class="line">pod &apos;SYAlipaySDK&apos;</div></pre></td></tr></table></figure></p>
+<p>否则会出现和该库冲突的问题。这三个SDK里面分别对应集成了相应的官方SDK，并且支持打包成动态库。</p>
+<p>该库可以用于Objective-C、swift工具，并支持打包成动态库。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/07/28/dynamic-framwork/" itemprop="url">
                   dynamic framwork
                 </a>
@@ -403,6 +543,108 @@
           
             <h2 id="Linux下查看端口号所使用的进程号："><a href="#Linux下查看端口号所使用的进程号：" class="headerlink" title="Linux下查看端口号所使用的进程号："></a>Linux下查看端口号所使用的进程号：</h2><p>使用lsof命令： lsof –i:端口号</p>
 <h2 id="Linux下查看进程占用端口"><a href="#Linux下查看进程占用端口" class="headerlink" title="Linux下查看进程占用端口:"></a>Linux下查看进程占用端口:</h2><p>查看程序对应进程号：ps –ef|grep 进程名</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/01/hello-world/" itemprop="url">
+                  Hello World
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-01T08:24:00+08:00" content="2017-05-01">
+              2017-05-01
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
 
           
         
@@ -716,108 +958,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/01/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-01T08:24:00+08:00" content="2017-05-01">
-              2017-05-01
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -859,7 +999,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
