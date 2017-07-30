@@ -1,0 +1,748 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="简介CocoaPods是Swift和Objective-C项目的依赖管理器，它有超过2.6万个库并被超过160万个app使用， CocoaPods可以帮助您优化扩展项目。CocoaPods管理的第三方开源库配置在https://github.com/CocoaPods/Specs 库中。 安装1234//安装最新版本sudo gem install cocoapods//安装指定版本sudo ge">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cocoapods 使用">
+<meta property="og:url" content="http://yoursite.com/2017/07/12/Cocoapods 使用/index.html">
+<meta property="og:site_name" content="灯火阑珊">
+<meta property="og:description" content="简介CocoaPods是Swift和Objective-C项目的依赖管理器，它有超过2.6万个库并被超过160万个app使用， CocoaPods可以帮助您优化扩展项目。CocoaPods管理的第三方开源库配置在https://github.com/CocoaPods/Specs 库中。 安装1234//安装最新版本sudo gem install cocoapods//安装指定版本sudo ge">
+<meta property="og:updated_time" content="2017-07-12T15:21:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cocoapods 使用">
+<meta name="twitter:description" content="简介CocoaPods是Swift和Objective-C项目的依赖管理器，它有超过2.6万个库并被超过160万个app使用， CocoaPods可以帮助您优化扩展项目。CocoaPods管理的第三方开源库配置在https://github.com/CocoaPods/Specs 库中。 安装1234//安装最新版本sudo gem install cocoapods//安装指定版本sudo ge">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/12/Cocoapods 使用/"/>
+
+  <title> Cocoapods 使用 | 灯火阑珊 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">灯火阑珊</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Cocoapods 使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-12T23:21:15+08:00" content="2017-07-12">
+              2017-07-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>CocoaPods是Swift和Objective-C项目的依赖管理器，它有超过2.6万个库并被超过160万个app使用， CocoaPods可以帮助您优化扩展项目。<br>CocoaPods管理的第三方开源库配置在<a href="https://github.com/CocoaPods/Specs" target="_blank" rel="external">https://github.com/CocoaPods/Specs</a> 库中。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//安装最新版本</div><div class="line">sudo gem install cocoapods</div><div class="line">//安装指定版本</div><div class="line">sudo gem install cocoapods -v 1.1.1</div></pre></td></tr></table></figure>
+<p>NOTE：在这里给大家推荐一款pod版本管理工具<code>podenv</code></p>
+<p>地址：<a href="https://github.com/kylef-archive/podenv" target="_blank" rel="external">https://github.com/kylef-archive/podenv</a></p>
+<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo gem uninstall cocoapods</div></pre></td></tr></table></figure>
+<p>NOTE：一般国内用户安装失败，是因为ruby源问题。因为ruby的软件源rubygems.org，使用的是亚马逊的云服务，但被我天朝屏蔽了。</p>
+<p><strong><em>一般的解决方式有两种：</em></strong></p>
+<ol>
+<li>移除<a href="https://rubygems.org" target="_blank" rel="external">https://rubygems.org</a> 源，添加<a href="https://gems.ruby-china.org/" target="_blank" rel="external">https://gems.ruby-china.org/</a> ，操作请看下面关于<code>gem sources</code> 命令介绍</li>
+<li>翻墙，关于如何翻墙问题，网上教程说的很详细，这里就不在累述。</li>
+</ol>
+<p>作为一名开发者，推荐使用<strong>第二种</strong>方式</p>
+<p>当cocoapods安装后，可以通过<code>pod --version</code>命令来查看当前安装的cocoapods版本</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li>使用terminal切换到你的project目录</li>
+<li>创建一个Podfile文件，你可以使用<code>touch Podfile</code>创建，但是有一种更为优雅的方式，通过在terminal执行<code>pod init</code>命令</li>
+<li>在你的Podfile文件里面为所欲为吧，关于Podfile的配置，请参考cocoapods官方链接：<a href="https://guides.cocoapods.org/syntax/podfile.html" target="_blank" rel="external">https://guides.cocoapods.org/syntax/podfile.html</a></li>
+<li>保存Podfile文件，运行<code>pod install</code></li>
+<li>以后打开你的项目都使用<strong>ProjectName.xcworkspace</strong>而非<strong>ProjectName.xproject</strong></li>
+</ol>
+<h2 id="pod-install-vs-pod-update"><a href="#pod-install-vs-pod-update" class="headerlink" title="pod install vs pod update"></a>pod install vs pod update</h2><p><code>pod install</code>和<code>pod update</code>命令，也许大家只会在第一次使用cocoapods配置project的时候使用一次<code>pod install</code>，甚至一次都没用过，一般都直接使用<code>pod update</code>命令了</p>
+<p>但是：<code>pod install</code>和<code>pod update</code>有什么区别呢，分别在什么时候使用呢？</p>
+<p><strong><em>NOTE：</em></strong></p>
+<ul>
+<li>install一个新的pods在你的project中，即使在你的project里面已经有一个<strong>Podfile</strong>文件或者之前已经执行了<code>pod install</code>命令</li>
+<li>使用<code>pod update [PODNAME]</code>，仅仅当你想要更新pods到一个新的版本的时候</li>
+</ul>
+<p><code>pod update</code>会更新所有Podfile文件里面所指定的依赖到一个新的版本。</p>
+<p><code>pod update [PODNAME]</code>仅仅会更新<strong>[PODNAME]</strong> 库</p>
+<p><strong><em>pod install</em></strong></p>
+<p>它不仅适用于当你第一次为你的project去检索新的pods的时候，也适用于你每次编辑<code>Podfile</code>文件（如：添加，更新，或者移除一个pod的时候）</p>
+<p>但是有以下需要注意：</p>
+<ul>
+<li>每次执行<code>pod install</code>命令，会根据<strong>Podfile.lock</strong>文件已经明确列出的库以及对应的版本去下载并安装pods，<br>而不会去检查相应的库是否有新的版本。其中<strong>Podfile.lock</strong>文件会记录已经引入的pod库和相应的版本。</li>
+<li>当你pods没有在<strong>Podfile.lock</strong>文件列出的时候，它会去根据Podfile文件里面所描述的依赖去下载（如：pod ‘MyPod’, ‘~&gt; 1.2’）</li>
+</ul>
+<p>NOTE:</p>
+<p><strong><em>pod outdated</em></strong></p>
+<p>当你使用<code>pod outdated</code>命令时，Cocoapods会列出比Podfile.lock文件中的pod更新的所有pods。这个时候你就可以使用<code>pod update PODNAME1 PODNAME2</code>去更新PODNAME1和PODNAME2的版本（pod update 后面可以跟多个pod）</p>
+<p><strong><em>pod update</em></strong></p>
+<p>当你执行<code>pod udpate PODNAME</code>命令的时候，它将会更新该库到一个满足在Podfile文件里面对该库限制的一个最新版本，而不会关心Podfile.lock文件里面对该库有没有限制</p>
+<p><strong><em>pod install/update [–no-repo-update]</em></strong></p>
+<p>执行<code>pod install/update</code> 命令会首先更新本地的配置库</p>
+<p>执行<code>pod install/update --no-repo-update</code> 命令不会更新本地的配置库</p>
+<p>本地配置库位置可以通过以下命令查看<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd ~/.cocoapods/repos</div><div class="line">ls</div></pre></td></tr></table></figure></p>
+<p>关于Cocoapods的使用更加详细的介绍：可以参考 <strong>最新的 CocoaPods 的使用教程</strong> 系列文章介绍<br><a href="http://ios.jobbole.com/90957/" target="_blank" rel="external">http://ios.jobbole.com/90957/</a></p>
+<p><strong>master</strong>文件夹是官方的open sources library</p>
+<p><strong><em>gem sources</em></strong></p>
+<p>关于查看当前电脑的ruby源，有如下一些命令需要了解</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">gem sources -l #查看当前已经制定的源</div><div class="line">gem sources -r SOURCE_URI #移除源</div><div class="line">gem sources -a SOURCE_URI #添加源</div></pre></td></tr></table></figure>
+<p>详情请参考：<code>gem sources --help</code> 来查看</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/12/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/12/Making-Cocoapods/" rel="prev" title="Cocoapods创建私有库">
+                Cocoapods创建私有库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="isandboy" />
+          <p class="site-author-name" itemprop="name">isandboy</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卸载"><span class="nav-number">3.</span> <span class="nav-text">卸载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">4.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pod-install-vs-pod-update"><span class="nav-number">5.</span> <span class="nav-text">pod install vs pod update</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">isandboy</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
