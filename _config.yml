@@ -78,4 +78,4 @@ deploy:
   type: git
   repository: https://github.com/isandboy/isandboy.github.io.git
   branch: master
-  message: SYPayKit简介
+  message: RxSwfit-share操作符简介
