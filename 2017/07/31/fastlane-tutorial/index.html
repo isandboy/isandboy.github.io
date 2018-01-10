@@ -84,16 +84,16 @@
 
 
 
-<meta name="description" content="简介CocoaPods是Swift和Objective-C项目的依赖管理器，它有超过2.6万个库并被超过160万个app使用， CocoaPods可以帮助您优化扩展项目。CocoaPods管理的第三方开源库配置在https://github.com/CocoaPods/Specs 库中。 安装1234//安装最新版本sudo gem install cocoapods//安装指定版本sudo ge">
+<meta name="description" content="在这篇教程里面，你讲学习如何使用fastlane将app部署到App Store。 Note:本教程大量使用了命令行，你不需要是一个精通终端者，但要了解一些命令行的基本使用。 学习本教程你需要了解code signing和iTunes Connect。如果你对这些不熟悉，请先阅读这篇文章 开始下载该教程Demo，放到合适的路径 mZone， fastlane 运行环境：  OS X 10.9 (M">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Cocoapods 使用">
-<meta property="og:url" content="http://isandboy.github.io/2017/05/01/Cocoapods 使用/index.html">
+<meta property="og:title" content="fastlane使用指南">
+<meta property="og:url" content="http://isandboy.github.io/2017/07/31/fastlane-tutorial/index.html">
 <meta property="og:site_name" content="灯火阑珊">
-<meta property="og:description" content="简介CocoaPods是Swift和Objective-C项目的依赖管理器，它有超过2.6万个库并被超过160万个app使用， CocoaPods可以帮助您优化扩展项目。CocoaPods管理的第三方开源库配置在https://github.com/CocoaPods/Specs 库中。 安装1234//安装最新版本sudo gem install cocoapods//安装指定版本sudo ge">
-<meta property="og:updated_time" content="2017-07-28T16:29:06.000Z">
+<meta property="og:description" content="在这篇教程里面，你讲学习如何使用fastlane将app部署到App Store。 Note:本教程大量使用了命令行，你不需要是一个精通终端者，但要了解一些命令行的基本使用。 学习本教程你需要了解code signing和iTunes Connect。如果你对这些不熟悉，请先阅读这篇文章 开始下载该教程Demo，放到合适的路径 mZone， fastlane 运行环境：  OS X 10.9 (M">
+<meta property="og:updated_time" content="2017-07-31T15:18:37.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cocoapods 使用">
-<meta name="twitter:description" content="简介CocoaPods是Swift和Objective-C项目的依赖管理器，它有超过2.6万个库并被超过160万个app使用， CocoaPods可以帮助您优化扩展项目。CocoaPods管理的第三方开源库配置在https://github.com/CocoaPods/Specs 库中。 安装1234//安装最新版本sudo gem install cocoapods//安装指定版本sudo ge">
+<meta name="twitter:title" content="fastlane使用指南">
+<meta name="twitter:description" content="在这篇教程里面，你讲学习如何使用fastlane将app部署到App Store。 Note:本教程大量使用了命令行，你不需要是一个精通终端者，但要了解一些命令行的基本使用。 学习本教程你需要了解code signing和iTunes Connect。如果你对这些不熟悉，请先阅读这篇文章 开始下载该教程Demo，放到合适的路径 mZone， fastlane 运行环境：  OS X 10.9 (M">
 
 
 
@@ -114,9 +114,9 @@
 
 
 
-  <link rel="canonical" href="http://isandboy.github.io/2017/05/01/Cocoapods 使用/"/>
+  <link rel="canonical" href="http://isandboy.github.io/2017/07/31/fastlane-tutorial/"/>
 
-  <title> Cocoapods 使用 | 灯火阑珊 </title>
+  <title> fastlane使用指南 | 灯火阑珊 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -249,7 +249,7 @@
             
             
               
-                Cocoapods 使用
+                fastlane使用指南
               
             
           </h1>
@@ -261,8 +261,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-01T08:24:00+08:00" content="2017-05-01">
-              2017-05-01
+            <time itemprop="dateCreated" datetime="2017-07-31T22:36:46+08:00" content="2017-07-31">
+              2017-07-31
             </time>
           </span>
 
@@ -289,59 +289,27 @@
       
 
       
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>CocoaPods是Swift和Objective-C项目的依赖管理器，它有超过2.6万个库并被超过160万个app使用， CocoaPods可以帮助您优化扩展项目。<br>CocoaPods管理的第三方开源库配置在<a href="https://github.com/CocoaPods/Specs" target="_blank" rel="external">https://github.com/CocoaPods/Specs</a> 库中。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//安装最新版本</div><div class="line">sudo gem install cocoapods</div><div class="line">//安装指定版本</div><div class="line">sudo gem install cocoapods -v 1.1.1</div></pre></td></tr></table></figure>
-<p>NOTE：在这里给大家推荐一款pod版本管理工具<code>podenv</code></p>
-<p>地址：<a href="https://github.com/kylef-archive/podenv" target="_blank" rel="external">https://github.com/kylef-archive/podenv</a></p>
-<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo gem uninstall cocoapods</div></pre></td></tr></table></figure>
-<p>NOTE：一般国内用户安装失败，是因为ruby源问题。因为ruby的软件源rubygems.org，使用的是亚马逊的云服务，但被我天朝屏蔽了。</p>
-<p><strong><em>一般的解决方式有两种：</em></strong></p>
-<ol>
-<li>移除<a href="https://rubygems.org" target="_blank" rel="external">https://rubygems.org</a> 源，添加<a href="https://gems.ruby-china.org/" target="_blank" rel="external">https://gems.ruby-china.org/</a> ，操作请看下面关于<code>gem sources</code> 命令介绍</li>
-<li>翻墙，关于如何翻墙问题，网上教程说的很详细，这里就不在累述。</li>
-</ol>
-<p>作为一名开发者，推荐使用<strong>第二种</strong>方式</p>
-<p>当cocoapods安装后，可以通过<code>pod --version</code>命令来查看当前安装的cocoapods版本</p>
-<p>其他问题可参考：<a href="安装CocoaPods遇到的问题及解决办法">安装CocoaPods遇到的问题及解决办法</a></p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li>使用terminal切换到你的project目录</li>
-<li>创建一个Podfile文件，你可以使用<code>touch Podfile</code>创建，但是有一种更为优雅的方式，通过在terminal执行<code>pod init</code>命令</li>
-<li>在你的Podfile文件里面为所欲为吧，关于Podfile的配置，请参考cocoapods官方链接：<a href="https://guides.cocoapods.org/syntax/podfile.html" target="_blank" rel="external">https://guides.cocoapods.org/syntax/podfile.html</a></li>
-<li>保存Podfile文件，运行<code>pod install</code></li>
-<li>以后打开你的项目都使用<strong>ProjectName.xcworkspace</strong>而非<strong>ProjectName.xproject</strong></li>
-</ol>
-<h2 id="pod-install-vs-pod-update"><a href="#pod-install-vs-pod-update" class="headerlink" title="pod install vs pod update"></a>pod install vs pod update</h2><p><code>pod install</code>和<code>pod update</code>命令，也许大家只会在第一次使用cocoapods配置project的时候使用一次<code>pod install</code>，甚至一次都没用过，一般都直接使用<code>pod update</code>命令了</p>
-<p>但是：<code>pod install</code>和<code>pod update</code>有什么区别呢，分别在什么时候使用呢？</p>
-<p><strong><em>NOTE：</em></strong></p>
+        <p>在这篇教程里面，你讲学习如何使用fastlane将app部署到App Store。</p>
+<p><strong>Note:</strong>本教程大量使用了命令行，你不需要是一个精通终端者，但要了解一些命令行的基本使用。</p>
+<p>学习本教程你需要了解code signing和iTunes Connect。如果你对这些不熟悉，请先阅读<a href="https://www.raywenderlich.com/127936" target="_blank" rel="external">这篇文章</a></p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>下载<a href="https://koenig-media.raywenderlich.com/uploads/2016/12/mZone-swift3-starter.zip" target="_blank" rel="external">该教程Demo</a>，放到合适的路径</p>
+<p>mZone，</p>
+<p>fastlane 运行环境：</p>
 <ul>
-<li>install一个新的pods在你的project中，即使在你的project里面已经有一个<strong>Podfile</strong>文件或者之前已经执行了<code>pod install</code>命令</li>
-<li>使用<code>pod update [PODNAME]</code>，仅仅当你想要更新pods到一个新的版本的时候</li>
+<li>OS X 10.9 (Mavericks)或者更新</li>
+<li>Ruby2.0或者更新版本</li>
+<li>已付费的苹果开发者账号</li>
 </ul>
-<p><code>pod update</code>会更新所有Podfile文件里面所指定的依赖到一个新的版本。</p>
-<p><code>pod update [PODNAME]</code>仅仅会更新<strong>[PODNAME]</strong> 库</p>
-<p><strong><em>pod install</em></strong></p>
-<p>它不仅适用于当你第一次为你的project去检索新的pods的时候，也适用于你每次编辑<code>Podfile</code>文件（如：添加，更新，或者移除一个pod的时候）</p>
-<p>但是有以下需要注意：</p>
-<ul>
-<li>每次执行<code>pod install</code>命令，会根据<strong>Podfile.lock</strong>文件已经明确列出的库以及对应的版本去下载并安装pods，<br>而不会去检查相应的库是否有新的版本。其中<strong>Podfile.lock</strong>文件会记录已经引入的pod库和相应的版本。</li>
-<li>当你pods没有在<strong>Podfile.lock</strong>文件列出的时候，它会去根据Podfile文件里面所描述的依赖去下载（如：pod ‘MyPod’, ‘~&gt; 1.2’）</li>
+<p>因为fastlane是一系列Ruby scripts的集合，所以必须要匹配的Ruby环境。打开终端敲入以下命令可以查看当前Ruby版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ruby -v</div></pre></td></tr></table></figure></p>
+<p>在终端里面敲入下面命令可以查看Xcode CLT是否安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xcode-select --install</div></pre></td></tr></table></figure></p>
+<p>如果已经安装，你会得到这样的错误：<code>command line tools are already installed, use &quot;Software Update&quot; to install updates.</code>，否者，将为你安装Xcode CLT。</p>
+<p>完成上面的操作后，就可以安装fastlane了。继续在终端里面敲入下面命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo gem install -n /usr/local/bin fastlane --verbose</div></pre></td></tr></table></figure></p>
+<h2 id="fastlane-工具链"><a href="#fastlane-工具链" class="headerlink" title="fastlane 工具链"></a>fastlane 工具链</h2><ul>
+<li><a href="https://github.com/fastlane/fastlane/tree/master/produce" target="_blank" rel="external">produce</a><br>在iTunes Connect和Apple Developer Portal中创建新的iOS应用程序。</li>
+<li><a href="https://github.com/fastlane/fastlane/tree/master/cert" target="_blank" rel="external">cert</a>自动创建和维护签名证书。</li>
+<li><a href="https://github.com/fastlane/fastlane/tree/master/sigh" target="_blank" rel="external">sigh</a>创建，更新，下载和修复配置文件。</li>
 </ul>
-<p>NOTE:</p>
-<p><strong><em>pod outdated</em></strong></p>
-<p>当你使用<code>pod outdated</code>命令时，Cocoapods会列出比Podfile.lock文件中的pod更新的所有pods。这个时候你就可以使用<code>pod update PODNAME1 PODNAME2</code>去更新PODNAME1和PODNAME2的版本（pod update 后面可以跟多个pod）</p>
-<p><strong><em>pod update</em></strong></p>
-<p>当你执行<code>pod udpate PODNAME</code>命令的时候，它将会更新该库到一个满足在Podfile文件里面对该库限制的一个最新版本，而不会关心Podfile.lock文件里面对该库有没有限制</p>
-<p><strong><em>pod install/update [–no-repo-update]</em></strong></p>
-<p>执行<code>pod install/update</code> 命令会首先更新本地的配置库</p>
-<p>执行<code>pod install/update --no-repo-update</code> 命令不会更新本地的配置库</p>
-<p>本地配置库位置可以通过以下命令查看<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd ~/.cocoapods/repos</div><div class="line">ls</div></pre></td></tr></table></figure></p>
-<p>关于Cocoapods的使用更加详细的介绍：可以参考 <strong>最新的 CocoaPods 的使用教程</strong> 系列文章介绍<br><a href="http://ios.jobbole.com/90957/" target="_blank" rel="external">http://ios.jobbole.com/90957/</a></p>
-<p><strong>master</strong>文件夹是官方的open sources library</p>
-<p><strong><em>gem sources</em></strong></p>
-<p>关于查看当前电脑的ruby源，有如下一些命令需要了解</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">gem sources -l #查看当前已经制定的源</div><div class="line">gem sources -r SOURCE_URI #移除源</div><div class="line">gem sources -a SOURCE_URI #添加源</div></pre></td></tr></table></figure>
-<p>详情请参考：<code>gem sources --help</code> 来查看</p>
-
+<h2 id="设置fastlane"><a href="#设置fastlane" class="headerlink" title="设置fastlane"></a>设置fastlane</h2>
       
     </div>
 
@@ -366,16 +334,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/01/Making-Cocoapods/" rel="next" title="Cocoapods创建私有库">
-                <i class="fa fa-chevron-left"></i> Cocoapods创建私有库
+              <a href="/2017/07/30/SYPayKit简介/" rel="next" title="SYPayKit简介">
+                <i class="fa fa-chevron-left"></i> SYPayKit简介
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/28/Linux-Common-Commands/" rel="prev" title="Linux 常用命令">
-                Linux 常用命令 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/01/09/Rxswift-share/" rel="prev" title="Rxswift share">
+                Rxswift share <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -499,7 +467,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卸载"><span class="nav-number">3.</span> <span class="nav-text">卸载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">4.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pod-install-vs-pod-update"><span class="nav-number">5.</span> <span class="nav-text">pod install vs pod update</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#开始"><span class="nav-number">1.</span> <span class="nav-text">开始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fastlane-工具链"><span class="nav-number">2.</span> <span class="nav-text">fastlane 工具链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置fastlane"><span class="nav-number">3.</span> <span class="nav-text">设置fastlane</span></a></li></ol></div>
             
           </div>
         </section>
