@@ -4,7 +4,7 @@ date: 2018-01-09 22:31:32
 tags:
 ---
 
-原文链接：https://medium.com/@_achou/rxswift-share-vs-replay-vs-sharereplay-bea99ac42168
+原文：https://medium.com/@_achou/rxswift-share-vs-replay-vs-sharereplay-bea99ac42168
 
 ## RxSwift: share vs replay vc shareReplay
 
