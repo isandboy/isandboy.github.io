@@ -84,17 +84,17 @@
 
 
 
-<meta name="description" content="原文链接：https://medium.com/@_achou/rxswift-share-vs-replay-vs-sharereplay-bea99ac42168 RxSwift: share vs replay vc shareReplay 对于使用RxSwift的初学者来说，经常会犯的错误是: 多次订阅同一个observable，却重复执行响应链 例如 123456 let results">
+<meta name="description" content="原文：https://medium.com/@_achou/rxswift-share-vs-replay-vs-sharereplay-bea99ac42168 RxSwift: share vs replay vc shareReplay 对于使用RxSwift的初学者来说，经常会犯的错误是: 多次订阅同一个observable，却重复执行响应链 例如 123456 let results =">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rxswift share">
 <meta property="og:url" content="http://isandboy.github.io/2018/01/09/Rxswift-share/index.html">
 <meta property="og:site_name" content="灯火阑珊">
-<meta property="og:description" content="原文链接：https://medium.com/@_achou/rxswift-share-vs-replay-vs-sharereplay-bea99ac42168 RxSwift: share vs replay vc shareReplay 对于使用RxSwift的初学者来说，经常会犯的错误是: 多次订阅同一个observable，却重复执行响应链 例如 123456 let results">
+<meta property="og:description" content="原文：https://medium.com/@_achou/rxswift-share-vs-replay-vs-sharereplay-bea99ac42168 RxSwift: share vs replay vc shareReplay 对于使用RxSwift的初学者来说，经常会犯的错误是: 多次订阅同一个observable，却重复执行响应链 例如 123456 let results =">
 <meta property="og:image" content="http://isandboy.github.io/img/RxSwift-share.png">
-<meta property="og:updated_time" content="2018-01-10T16:10:00.621Z">
+<meta property="og:updated_time" content="2018-01-15T14:31:31.310Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rxswift share">
-<meta name="twitter:description" content="原文链接：https://medium.com/@_achou/rxswift-share-vs-replay-vs-sharereplay-bea99ac42168 RxSwift: share vs replay vc shareReplay 对于使用RxSwift的初学者来说，经常会犯的错误是: 多次订阅同一个observable，却重复执行响应链 例如 123456 let results">
+<meta name="twitter:description" content="原文：https://medium.com/@_achou/rxswift-share-vs-replay-vs-sharereplay-bea99ac42168 RxSwift: share vs replay vc shareReplay 对于使用RxSwift的初学者来说，经常会犯的错误是: 多次订阅同一个observable，却重复执行响应链 例如 123456 let results =">
 <meta name="twitter:image" content="http://isandboy.github.io/img/RxSwift-share.png">
 
 
@@ -291,7 +291,7 @@
       
 
       
-        <p>原文链接：<a href="https://medium.com/@_achou/rxswift-share-vs-replay-vs-sharereplay-bea99ac42168" target="_blank" rel="external">https://medium.com/@_achou/rxswift-share-vs-replay-vs-sharereplay-bea99ac42168</a></p>
+        <p>原文：<a href="https://medium.com/@_achou/rxswift-share-vs-replay-vs-sharereplay-bea99ac42168" target="_blank" rel="external">https://medium.com/@_achou/rxswift-share-vs-replay-vs-sharereplay-bea99ac42168</a></p>
 <h2 id="RxSwift-share-vs-replay-vc-shareReplay"><a href="#RxSwift-share-vs-replay-vc-shareReplay" class="headerlink" title="RxSwift: share vs replay vc shareReplay"></a>RxSwift: share vs replay vc shareReplay</h2><p> 对于使用RxSwift的初学者来说，经常会犯的错误是: 多次订阅同一个<code>observable</code>，却重复执行响应链</p>
 <p>例如<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"> let results = query.rx.text</div><div class="line">    .flatMapLatest &#123; query in</div><div class="line">        networkRequestAPI(query)</div><div class="line">    &#125;</div><div class="line">results.subscribe(...)   // a network request</div><div class="line">results.subscribe(...)   // another network request</div></pre></td></tr></table></figure></p>
 <p> 当同一个<code>observable</code>，需要被多次订阅的时候，而我们又不想这个<code>observable</code>对每个订阅者都执行。<code>RxSwift</code>为我们提供了几个操作符<code>share()</code>,<code>replay()</code>,<code>replayAll()</code>,<code>shareReplay()</code>,<code>publish()</code>,and <code>shareReplayLatestWhileConnected</code>来解决.那么我们应该使用哪一个呢？</p>
