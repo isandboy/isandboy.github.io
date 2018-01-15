@@ -1,0 +1,725 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="原发：https://medium.com/@mecid/mastering-mvvm-on-ios-f875d2b99816 译者：Extra Mo Mastering MVVM on iOS网上有很多关于app架构的文章，今天，我将展示一些使用MVVM架构开发iOS应用时的技巧。下面我不将介绍其他架构，如果你需要了解更多，这有一篇不错的文章 (https://medium.com/ios-os">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reactive-MVVM">
+<meta property="og:url" content="http://isandboy.github.io/2018/01/15/rx-mvvm/index.html">
+<meta property="og:site_name" content="灯火阑珊">
+<meta property="og:description" content="原发：https://medium.com/@mecid/mastering-mvvm-on-ios-f875d2b99816 译者：Extra Mo Mastering MVVM on iOS网上有很多关于app架构的文章，今天，我将展示一些使用MVVM架构开发iOS应用时的技巧。下面我不将介绍其他架构，如果你需要了解更多，这有一篇不错的文章 (https://medium.com/ios-os">
+<meta property="og:updated_time" content="2018-01-15T14:26:54.011Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Reactive-MVVM">
+<meta name="twitter:description" content="原发：https://medium.com/@mecid/mastering-mvvm-on-ios-f875d2b99816 译者：Extra Mo Mastering MVVM on iOS网上有很多关于app架构的文章，今天，我将展示一些使用MVVM架构开发iOS应用时的技巧。下面我不将介绍其他架构，如果你需要了解更多，这有一篇不错的文章 (https://medium.com/ios-os">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://isandboy.github.io/2018/01/15/rx-mvvm/"/>
+
+  <title> Reactive-MVVM | 灯火阑珊 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">灯火阑珊</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Reactive-MVVM
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-01-15T20:57:24+08:00" content="2018-01-15">
+              2018-01-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>原发：<a href="https://medium.com/@mecid/mastering-mvvm-on-ios-f875d2b99816" target="_blank" rel="external">https://medium.com/@mecid/mastering-mvvm-on-ios-f875d2b99816</a></p>
+<p>译者：Extra Mo</p>
+<h2 id="Mastering-MVVM-on-iOS"><a href="#Mastering-MVVM-on-iOS" class="headerlink" title="Mastering MVVM on iOS"></a>Mastering MVVM on iOS</h2><p>网上有很多关于app架构的文章，今天，我将展示一些使用MVVM架构开发iOS应用时的技巧。下面我不将介绍其他架构，如果你需要了解更多，这有一篇不错的文章 (<a href="https://medium.com/ios-os-x-development/ios-architecture-patterns-ecba4c38de52" target="_blank" rel="external">https://medium.com/ios-os-x-development/ios-architecture-patterns-ecba4c38de52</a>).</p>
+<h3 id="Why-MVVM"><a href="#Why-MVVM" class="headerlink" title="Why MVVM?"></a>Why MVVM?</h3><p>MVC的主要问题是混合责任，这导致了一些问题的出现，比如重量级视图控制器。</p>
+<p>我们都知道<code>UIViewController</code>是苹果iOS SDK的主要组件，所有的操作都是在这里面开始和构建。尽管是叫<code>UIViewController</code>，但它更<code>View</code>和来自于MVC(或MVP)的一个经典控制器(或<code>Presenter</code>)相比，因为它里面有<code>viewDidLoad</code>、<code>viewWillLayoutSubviews</code>和其他视图相关方法的回调。这就是为什么我们应该忽略名称中的Controller关键字，并将其作为视图使用，而实际控制器的角色则采用ViewModel。</p>
+<p>ViewModel是视图的完整数据表示。每个视图应该仅仅只能拥有一个ViewModel实例。通常，ViewModel使用一个管理器来获取数据并将其转换为试图需要的格式。请看以下列子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">import Foundation</div><div class="line"></div><div class="line">class ItemsViewModel &#123;</div><div class="line">    var items: [Item] = []</div><div class="line">    var error: Error?</div><div class="line">    var refreshing = false</div><div class="line"></div><div class="line">    private let dataManager: DataManager</div><div class="line">    init(dataManager: DataManager) &#123;</div><div class="line">        self.dataManager = dataManager</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func fetch(completion: @escaping () -&gt; Void) &#123;</div><div class="line">        refreshing = true</div><div class="line">        dataManager.fetchItems &#123; [weak self] (items, error) in</div><div class="line">            self?.items = items ?? []</div><div class="line">            self?.error = error</div><div class="line">            self?.refreshing = false</div><div class="line">            completion()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里我们的ViewModel，通过DataManager获取<code>items</code>并将其保存在某个变量中。它还有一个错误和刷新状态的变量，这就带来了在所有需要的条件下构建UI的机会。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">import UIKit</div><div class="line"></div><div class="line">class ItemsViewController: UIViewController &#123;</div><div class="line">    @IBOutlet private weak var tableView: UITableView!</div><div class="line">    private var viewModel: ItemsViewModel</div><div class="line"></div><div class="line">    init(viewModel: ItemsViewModel) &#123;</div><div class="line">        self.viewModel = viewModel</div><div class="line">        super.init(nibName: nil, bundle: nil)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override func viewDidLoad() &#123;</div><div class="line">        super.viewDidLoad()</div><div class="line"></div><div class="line">        viewModel.fetch &#123; [weak self] in</div><div class="line">            self?.tableView.reloadData()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">extension ItemsViewController: UITableViewDataSource &#123;</div><div class="line">    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int &#123;</div><div class="line">        return viewModel.items.count</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>正如您在上面看到的，我们的<code>ItemsViewController</code>包含显示列表数据的<code>UITableView</code>。它含有ViewModel实例，并要求它在<code>viewDidLoad</code>回调中获取数据。我们还传递闭包，当数据被获取时，它将重新加载<code>UITableView</code>。  <code>UITableViewDataSource</code>方法也使用ViewModel来获取cell个数。</p>
+<h3 id="Reactive-Bindings"><a href="#Reactive-Bindings" class="headerlink" title="Reactive Bindings"></a>Reactive Bindings</h3><p>View和ViewModel之间的绑定是MVVM模式的主要思想，开发人员可以在ViewModel中编写逻辑代码，在View中做布局。在第一个例子中，我们使用了闭包，因为iOS SDK不支持绑定。在实际应用中，您可以使用一些流行的FRP扩展，比如<code>ReactiveCocoa</code>、<code>RxSwift</code>或<code>Bond</code>。我倾向于使用<code>Bond</code>，因为它简单。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">import Bond</div><div class="line"></div><div class="line">class ItemsViewModel &#123;</div><div class="line">    let items = Observable&lt;[Item]&gt;([])</div><div class="line">    let error = Observable&lt;Error?&gt;(nil)</div><div class="line">    let refreshing = Observable&lt;Bool&gt;(false)</div><div class="line"></div><div class="line">    private let dataManager: DataManager</div><div class="line">    init(dataManager: DataManager) &#123;</div><div class="line">        self.dataManager = dataManager</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func fetch() &#123;</div><div class="line">        refreshing.value = false</div><div class="line">        dataManager.fetchItems &#123; [weak self] (items, error) in</div><div class="line">            self?.items.value = items ?? []</div><div class="line">            self?.error.value = error</div><div class="line">            self?.refreshing.value = false</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这是相同的ItemsViewModel，但现在我们使用响应式编程来观察变化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">class ItemsViewController: UIViewController &#123;</div><div class="line">    @IBOutlet private weak var tableView: UITableView!</div><div class="line">    private let activityIndicator = ActivityIndicatorView()</div><div class="line">    private var viewModel: ItemsViewModel</div><div class="line"></div><div class="line">    init(viewModel: ItemsViewModel) &#123;</div><div class="line">        self.viewModel = viewModel</div><div class="line">        super.init(nibName: nil, bundle: nil)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override func viewDidLoad() &#123;</div><div class="line">        super.viewDidLoad()</div><div class="line">        setupUI()</div><div class="line">        bindViewModel()</div><div class="line">        viewModel.fetch()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func bindViewModel() &#123;</div><div class="line">        viewModel.refreshing.bind(to: activityIndicator.reactive.isAnimating)</div><div class="line">        viewModel.items.bind(to: self) &#123; strongSelf, _ in</div><div class="line">            strongSelf.tableView.reloadData()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func setupUI() &#123;</div><div class="line">        view.addSubview(activityIndicator)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">extension ItemsViewController: UITableViewDataSource &#123;</div><div class="line">    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int &#123;</div><div class="line">        return viewModel.items.value.count</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>让我们看一下<code>bindViewModel</code>方法，这里我们将把ViewModel绑定到视图。每当刷新值改变时，它设置activityIndicator的isAnimating属性。或者当items被更改时，<code>UITableView</code>重新加载。正如您所看到的，在大多数情况下，响应式绑定简化了代码。</p>
+<h3 id="ViewModel-Composition"><a href="#ViewModel-Composition" class="headerlink" title="ViewModel Composition"></a>ViewModel Composition</h3><p>有时，我们有多个数据源的复杂视图。例如，在<code>Instagram</code>应用中的用户资料中，我们有一些关于用户的信息以及所有与该用户有关的照片。这里好的做法是将这个逻辑分成两个或多个视图模型。但是我们有一个规则:每个视图应该只有一个ViewModel。在这种情况下，最好的选择是使用<code>ViewModel</code>组合。让我们来看看例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line">import Bond</div><div class="line">import ReactiveKit</div><div class="line"></div><div class="line">class UserProfileViewModel &#123;</div><div class="line">    let refreshing = Observable&lt;Bool&gt;(false)</div><div class="line">    let username = Observable&lt;String&gt;(&quot;&quot;)</div><div class="line">    let photos = Observable&lt;[Photos]&gt;([])</div><div class="line"></div><div class="line">    private let userViewModel: UserViewModel</div><div class="line">    private let photosViewModel: PhotosViewModel</div><div class="line"></div><div class="line">    init(userManager: UserManager, photoManager: PhotoManager) &#123;</div><div class="line">        userViewModel = UserViewModel(manager: userManager)</div><div class="line">        photosViewModel = PhotosViewModel(manager: photoManager)</div><div class="line"></div><div class="line">        userViewModel.username.bind(to: username)</div><div class="line">        photosViewModel.photos.bind(to: photos)</div><div class="line">        combineLatest(userViewModel.refreshing, photosViewModel.refreshing)</div><div class="line">            .map &#123; $0 || $1 &#125;</div><div class="line">            .bind(to: refreshing)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func fetch() &#123;</div><div class="line">        userViewModel.fetch()</div><div class="line">        photosViewModel.fetch()</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">class UserViewModel &#123;</div><div class="line">    let refreshing = Observable&lt;Bool&gt;(false)</div><div class="line">    let username = Observable&lt;String&gt;(&quot;&quot;)</div><div class="line"></div><div class="line">    func fetch() &#123;</div><div class="line">        refreshing.value = true</div><div class="line">        manager.fetch(user: id) &#123; [weak self] (user, error) in</div><div class="line">            self?.username.value = &quot;@&quot; + user.username</div><div class="line">            self?.refreshing.value = false</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">class PhotosViewModel &#123;</div><div class="line">    let refreshing = Observable&lt;Bool&gt;(false)</div><div class="line">    let photos = Observable&lt;[Photo]&gt;([])</div><div class="line"></div><div class="line">    func fetch() &#123;</div><div class="line">        refreshing.value = true</div><div class="line">        manager.fetch(for user: id) &#123; [weak self] (photos, error) in</div><div class="line">            self?.photos.value = photos ?? []</div><div class="line">            self?.refreshing.value = false</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">view rawViewModelComposition.swift hosted with ❤ by GitHub</div></pre></td></tr></table></figure>
+<p>正如您所看到的，我们使用<code>UserProfileViewModel</code>，它含有两个视图模型并从它们中获取数据。我们还有一个刷新新的状态，它包含了两个内部视图模型的刷新状态。第二个重要点是在第36行中，ViewModel将数据格式化为所需的表单数据。视图只需要将组件绑定到ViewModel并显示数据。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>ViewModel是将表示逻辑层分离到其他层的一种非常简单的方式，它帮助我们避免了重量级的视图控制器，使我们更容易控制和覆盖单元测试。这就是我们的目的，简单而可测试的架构。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/09/Rxswift-share/" rel="next" title="Rxswift share">
+                <i class="fa fa-chevron-left"></i> Rxswift share
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="烟雨" />
+          <p class="site-author-name" itemprop="name">烟雨</p>
+          <p class="site-description motion-element" itemprop="description">那年今日，烟雨楼阁。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mastering-MVVM-on-iOS"><span class="nav-number">1.</span> <span class="nav-text">Mastering MVVM on iOS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-MVVM"><span class="nav-number">1.1.</span> <span class="nav-text">Why MVVM?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactive-Bindings"><span class="nav-number">1.2.</span> <span class="nav-text">Reactive Bindings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewModel-Composition"><span class="nav-number">1.3.</span> <span class="nav-text">ViewModel Composition</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">2.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">烟雨</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

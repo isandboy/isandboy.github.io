@@ -251,6 +251,118 @@
             
               
                 
+                <a class="post-title-link" href="/2018/01/15/rx-mvvm/" itemprop="url">
+                  Reactive-MVVM
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-01-15T20:57:24+08:00" content="2018-01-15">
+              2018-01-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原发：<a href="https://medium.com/@mecid/mastering-mvvm-on-ios-f875d2b99816" target="_blank" rel="external">https://medium.com/@mecid/mastering-mvvm-on-ios-f875d2b99816</a></p>
+<p>译者：Extra Mo</p>
+<h2 id="Mastering-MVVM-on-iOS"><a href="#Mastering-MVVM-on-iOS" class="headerlink" title="Mastering MVVM on iOS"></a>Mastering MVVM on iOS</h2><p>网上有很多关于app架构的文章，今天，我将展示一些使用MVVM架构开发iOS应用时的技巧。下面我不将介绍其他架构，如果你需要了解更多，这有一篇不错的文章 (<a href="https://medium.com/ios-os-x-development/ios-architecture-patterns-ecba4c38de52" target="_blank" rel="external">https://medium.com/ios-os-x-development/ios-architecture-patterns-ecba4c38de52</a>).</p>
+<h3 id="Why-MVVM"><a href="#Why-MVVM" class="headerlink" title="Why MVVM?"></a>Why MVVM?</h3><p>MVC的主要问题是混合责任，这导致了一些问题的出现，比如重量级视图控制器。</p>
+<p>我们都知道<code>UIViewController</code>是苹果iOS SDK的主要组件，所有的操作都是在这里面开始和构建。尽管是叫<code>UIViewController</code>，但它更<code>View</code>和来自于MVC(或MVP)的一个经典控制器(或<code>Presenter</code>)相比，因为它里面有<code>viewDidLoad</code>、<code>viewWillLayoutSubviews</code>和其他视图相关方法的回调。这就是为什么我们应该忽略名称中的Controller关键字，并将其作为视图使用，而实际控制器的角色则采用ViewModel。</p>
+<p>ViewModel是视图的完整数据表示。每个视图应该仅仅只能拥有一个ViewModel实例。通常，ViewModel使用一个管理器来获取数据并将其转换为试图需要的格式。请看以下列子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">import Foundation</div><div class="line"></div><div class="line">class ItemsViewModel &#123;</div><div class="line">    var items: [Item] = []</div><div class="line">    var error: Error?</div><div class="line">    var refreshing = false</div><div class="line"></div><div class="line">    private let dataManager: DataManager</div><div class="line">    init(dataManager: DataManager) &#123;</div><div class="line">        self.dataManager = dataManager</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func fetch(completion: @escaping () -&gt; Void) &#123;</div><div class="line">        refreshing = true</div><div class="line">        dataManager.fetchItems &#123; [weak self] (items, error) in</div><div class="line">            self?.items = items ?? []</div><div class="line">            self?.error = error</div><div class="line">            self?.refreshing = false</div><div class="line">            completion()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里我们的ViewModel，通过DataManager获取<code>items</code>并将其保存在某个变量中。它还有一个错误和刷新状态的变量，这就带来了在所有需要的条件下构建UI的机会。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">import UIKit</div><div class="line"></div><div class="line">class ItemsViewController: UIViewController &#123;</div><div class="line">    @IBOutlet private weak var tableView: UITableView!</div><div class="line">    private var viewModel: ItemsViewModel</div><div class="line"></div><div class="line">    init(viewModel: ItemsViewModel) &#123;</div><div class="line">        self.viewModel = viewModel</div><div class="line">        super.init(nibName: nil, bundle: nil)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override func viewDidLoad() &#123;</div><div class="line">        super.viewDidLoad()</div><div class="line"></div><div class="line">        viewModel.fetch &#123; [weak self] in</div><div class="line">            self?.tableView.reloadData()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">extension ItemsViewController: UITableViewDataSource &#123;</div><div class="line">    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int &#123;</div><div class="line">        return viewModel.items.count</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>正如您在上面看到的，我们的<code>ItemsViewController</code>包含显示列表数据的<code>UITableView</code>。它含有ViewModel实例，并要求它在<code>viewDidLoad</code>回调中获取数据。我们还传递闭包，当数据被获取时，它将重新加载<code>UITableView</code>。  <code>UITableViewDataSource</code>方法也使用ViewModel来获取cell个数。</p>
+<h3 id="Reactive-Bindings"><a href="#Reactive-Bindings" class="headerlink" title="Reactive Bindings"></a>Reactive Bindings</h3><p>View和ViewModel之间的绑定是MVVM模式的主要思想，开发人员可以在ViewModel中编写逻辑代码，在View中做布局。在第一个例子中，我们使用了闭包，因为iOS SDK不支持绑定。在实际应用中，您可以使用一些流行的FRP扩展，比如<code>ReactiveCocoa</code>、<code>RxSwift</code>或<code>Bond</code>。我倾向于使用<code>Bond</code>，因为它简单。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">import Bond</div><div class="line"></div><div class="line">class ItemsViewModel &#123;</div><div class="line">    let items = Observable&lt;[Item]&gt;([])</div><div class="line">    let error = Observable&lt;Error?&gt;(nil)</div><div class="line">    let refreshing = Observable&lt;Bool&gt;(false)</div><div class="line"></div><div class="line">    private let dataManager: DataManager</div><div class="line">    init(dataManager: DataManager) &#123;</div><div class="line">        self.dataManager = dataManager</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func fetch() &#123;</div><div class="line">        refreshing.value = false</div><div class="line">        dataManager.fetchItems &#123; [weak self] (items, error) in</div><div class="line">            self?.items.value = items ?? []</div><div class="line">            self?.error.value = error</div><div class="line">            self?.refreshing.value = false</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这是相同的ItemsViewModel，但现在我们使用响应式编程来观察变化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">class ItemsViewController: UIViewController &#123;</div><div class="line">    @IBOutlet private weak var tableView: UITableView!</div><div class="line">    private let activityIndicator = ActivityIndicatorView()</div><div class="line">    private var viewModel: ItemsViewModel</div><div class="line"></div><div class="line">    init(viewModel: ItemsViewModel) &#123;</div><div class="line">        self.viewModel = viewModel</div><div class="line">        super.init(nibName: nil, bundle: nil)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override func viewDidLoad() &#123;</div><div class="line">        super.viewDidLoad()</div><div class="line">        setupUI()</div><div class="line">        bindViewModel()</div><div class="line">        viewModel.fetch()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func bindViewModel() &#123;</div><div class="line">        viewModel.refreshing.bind(to: activityIndicator.reactive.isAnimating)</div><div class="line">        viewModel.items.bind(to: self) &#123; strongSelf, _ in</div><div class="line">            strongSelf.tableView.reloadData()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func setupUI() &#123;</div><div class="line">        view.addSubview(activityIndicator)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">extension ItemsViewController: UITableViewDataSource &#123;</div><div class="line">    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int &#123;</div><div class="line">        return viewModel.items.value.count</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>让我们看一下<code>bindViewModel</code>方法，这里我们将把ViewModel绑定到视图。每当刷新值改变时，它设置activityIndicator的isAnimating属性。或者当items被更改时，<code>UITableView</code>重新加载。正如您所看到的，在大多数情况下，响应式绑定简化了代码。</p>
+<h3 id="ViewModel-Composition"><a href="#ViewModel-Composition" class="headerlink" title="ViewModel Composition"></a>ViewModel Composition</h3><p>有时，我们有多个数据源的复杂视图。例如，在<code>Instagram</code>应用中的用户资料中，我们有一些关于用户的信息以及所有与该用户有关的照片。这里好的做法是将这个逻辑分成两个或多个视图模型。但是我们有一个规则:每个视图应该只有一个ViewModel。在这种情况下，最好的选择是使用<code>ViewModel</code>组合。让我们来看看例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line">import Bond</div><div class="line">import ReactiveKit</div><div class="line"></div><div class="line">class UserProfileViewModel &#123;</div><div class="line">    let refreshing = Observable&lt;Bool&gt;(false)</div><div class="line">    let username = Observable&lt;String&gt;(&quot;&quot;)</div><div class="line">    let photos = Observable&lt;[Photos]&gt;([])</div><div class="line"></div><div class="line">    private let userViewModel: UserViewModel</div><div class="line">    private let photosViewModel: PhotosViewModel</div><div class="line"></div><div class="line">    init(userManager: UserManager, photoManager: PhotoManager) &#123;</div><div class="line">        userViewModel = UserViewModel(manager: userManager)</div><div class="line">        photosViewModel = PhotosViewModel(manager: photoManager)</div><div class="line"></div><div class="line">        userViewModel.username.bind(to: username)</div><div class="line">        photosViewModel.photos.bind(to: photos)</div><div class="line">        combineLatest(userViewModel.refreshing, photosViewModel.refreshing)</div><div class="line">            .map &#123; $0 || $1 &#125;</div><div class="line">            .bind(to: refreshing)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func fetch() &#123;</div><div class="line">        userViewModel.fetch()</div><div class="line">        photosViewModel.fetch()</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">class UserViewModel &#123;</div><div class="line">    let refreshing = Observable&lt;Bool&gt;(false)</div><div class="line">    let username = Observable&lt;String&gt;(&quot;&quot;)</div><div class="line"></div><div class="line">    func fetch() &#123;</div><div class="line">        refreshing.value = true</div><div class="line">        manager.fetch(user: id) &#123; [weak self] (user, error) in</div><div class="line">            self?.username.value = &quot;@&quot; + user.username</div><div class="line">            self?.refreshing.value = false</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">class PhotosViewModel &#123;</div><div class="line">    let refreshing = Observable&lt;Bool&gt;(false)</div><div class="line">    let photos = Observable&lt;[Photo]&gt;([])</div><div class="line"></div><div class="line">    func fetch() &#123;</div><div class="line">        refreshing.value = true</div><div class="line">        manager.fetch(for user: id) &#123; [weak self] (photos, error) in</div><div class="line">            self?.photos.value = photos ?? []</div><div class="line">            self?.refreshing.value = false</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">view rawViewModelComposition.swift hosted with ❤ by GitHub</div></pre></td></tr></table></figure>
+<p>正如您所看到的，我们使用<code>UserProfileViewModel</code>，它含有两个视图模型并从它们中获取数据。我们还有一个刷新新的状态，它包含了两个内部视图模型的刷新状态。第二个重要点是在第36行中，ViewModel将数据格式化为所需的表单数据。视图只需要将组件绑定到ViewModel并显示数据。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>ViewModel是将表示逻辑层分离到其他层的一种非常简单的方式，它帮助我们避免了重量级的视图控制器，使我们更容易控制和覆盖单元测试。这就是我们的目的，简单而可测试的架构。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2018/01/09/Rxswift-share/" itemprop="url">
                   Rxswift share
                 </a>
@@ -1216,7 +1328,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
