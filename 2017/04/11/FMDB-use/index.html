@@ -90,7 +90,7 @@
 <meta property="og:url" content="http://isandboy.github.io/2017/04/11/FMDB-use/index.html">
 <meta property="og:site_name" content="灯火阑珊">
 <meta property="og:description" content="FMDBFMDB的下载地址 https://github.com/ccgus/fmdb FMDB的安装FMDB can be installed using CocoaPods. pod &amp;apos;FMDB&amp;apos; # pod &amp;apos;FMDB/FTS&amp;apos;   # FMDB with FTS # pod &amp;apos;FMDB/standalone&amp;apos;   # FMDB w">
-<meta property="og:updated_time" content="2018-01-19T14:36:12.653Z">
+<meta property="og:updated_time" content="2018-01-19T14:45:07.723Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FMDB使用">
 <meta name="twitter:description" content="FMDBFMDB的下载地址 https://github.com/ccgus/fmdb FMDB的安装FMDB can be installed using CocoaPods. pod &amp;apos;FMDB&amp;apos; # pod &amp;apos;FMDB/FTS&amp;apos;   # FMDB with FTS # pod &amp;apos;FMDB/standalone&amp;apos;   # FMDB w">
@@ -304,7 +304,7 @@
 </ol>
 <h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ol>
 <li>在多线程中推荐使用<code>FMDatabaseQueue</code>，为了保证线程安全。</li>
-<li>为了提高执行效率，使用<code>Transactions</code>(事物)，批量执行sql语句。</li>
+<li>为了提高执行效率，使用<code>Transactions</code>(事务)，批量执行sql语句。</li>
 <li>同一个sqlite数据库支持同时在多个线程里面执行查询操作，但不支持同时执行更新和查询操作。</li>
 </ol>
 <h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h4 id="案例一"><a href="#案例一" class="headerlink" title="案例一"></a>案例一</h4><p>当正在更新数据库的时候，用户执行了查询操作<br>假如更新数据库需要2分钟，那么就会出现页面卡顿的情况，当数据库更新完毕后，才会执行用户的查询操作。</p>
@@ -441,7 +441,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">12</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

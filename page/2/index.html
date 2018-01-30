@@ -251,6 +251,125 @@
             
               
                 
+                <a class="post-title-link" href="/2017/04/11/FMDB-use/" itemprop="url">
+                  FMDB使用
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-11T20:57:24+08:00" content="2017-04-11">
+              2017-04-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="FMDB"><a href="#FMDB" class="headerlink" title="FMDB"></a>FMDB</h1><p>FMDB的下载地址 <a href="https://github.com/ccgus/fmdb" target="_blank" rel="external">https://github.com/ccgus/fmdb</a></p>
+<p>FMDB的安装<br>FMDB can be installed using CocoaPods.</p>
+<pre><code>pod &apos;FMDB&apos;
+# pod &apos;FMDB/FTS&apos;   # FMDB with FTS
+# pod &apos;FMDB/standalone&apos;   # FMDB with latest SQLite amalgamation source
+# pod &apos;FMDB/standalone/FTS&apos;   # FMDB with latest SQLite amalgamation source and FTS
+# pod &apos;FMDB/SQLCipher&apos;   # FMDB with SQLCipher
+</code></pre><h2 id="USage"><a href="#USage" class="headerlink" title="USage"></a>USage</h2><p>There are three main classes in FMDB:</p>
+<ol>
+<li><code>FMDatabase</code> - Represents a single SQLite database. Used for executing SQL statements.</li>
+<li><code>FMResultSet</code> - Represents the results of executing a query on an FMDatabase.</li>
+<li><code>FMDatabaseQueue</code> - If you’re wanting to perform queries and updates on multiple threads, you’ll want to use this class. It’s described in the “Thread Safety” section below.</li>
+</ol>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ol>
+<li>在多线程中推荐使用<code>FMDatabaseQueue</code>，为了保证线程安全。</li>
+<li>为了提高执行效率，使用<code>Transactions</code>(事务)，批量执行sql语句。</li>
+<li>同一个sqlite数据库支持同时在多个线程里面执行查询操作，但不支持同时执行更新和查询操作。</li>
+</ol>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h4 id="案例一"><a href="#案例一" class="headerlink" title="案例一"></a>案例一</h4><p>当正在更新数据库的时候，用户执行了查询操作<br>假如更新数据库需要2分钟，那么就会出现页面卡顿的情况，当数据库更新完毕后，才会执行用户的查询操作。</p>
+<p>解决方法：</p>
+<ol>
+<li>更新数据库使用<code>Transactions</code>（事务），一般情况2万条数据需要3s左右，还是挺快的。</li>
+<li><p>但有时候设备性能比较差，可能需要40s左右，这样会让用户等待40s。<br>使用<code>Transactions</code>（事务）批量化执行sql语句，使用延迟事务操作。</p>
+<p> 如2万条数据，可以选择每次更新后，当前分线程休眠2s（足够用户执行查询操作），然后继续执行事务操作，以此类推，直到数据库更新完毕。</p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/03/11/屏幕旋转/" itemprop="url">
                   屏幕旋转适配
                 </a>
@@ -394,7 +513,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">12</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

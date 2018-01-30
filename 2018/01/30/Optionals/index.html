@@ -84,15 +84,16 @@
 
 
 
-<meta name="description" content="那年今日，烟雨楼阁。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="灯火阑珊">
-<meta property="og:url" content="http://isandboy.github.io/archives/2017/04/index.html">
+<meta name="description" content="原文：https://useyourloaf.com/blog/swift-non-nil-values-in-an-array-of-optionals/ 我发现除了配合我们超级熟悉的 switch语句，很难想起有别的地方使用 case语句，这里有个很有用的案例，当你需要对可选的数组中非空值做一些操作时。 这是一个使用场景，一个String类型的数组，里面有一些值可能为nil。 1let nam">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift Non-Nil Values In An Array Of Optionals">
+<meta property="og:url" content="http://isandboy.github.io/2018/01/30/Optionals/index.html">
 <meta property="og:site_name" content="灯火阑珊">
-<meta property="og:description" content="那年今日，烟雨楼阁。">
+<meta property="og:description" content="原文：https://useyourloaf.com/blog/swift-non-nil-values-in-an-array-of-optionals/ 我发现除了配合我们超级熟悉的 switch语句，很难想起有别的地方使用 case语句，这里有个很有用的案例，当你需要对可选的数组中非空值做一些操作时。 这是一个使用场景，一个String类型的数组，里面有一些值可能为nil。 1let nam">
+<meta property="og:updated_time" content="2018-01-30T14:21:39.520Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="灯火阑珊">
-<meta name="twitter:description" content="那年今日，烟雨楼阁。">
+<meta name="twitter:title" content="Swift Non-Nil Values In An Array Of Optionals">
+<meta name="twitter:description" content="原文：https://useyourloaf.com/blog/swift-non-nil-values-in-an-array-of-optionals/ 我发现除了配合我们超级熟悉的 switch语句，很难想起有别的地方使用 case语句，这里有个很有用的案例，当你需要对可选的数组中非空值做一些操作时。 这是一个使用场景，一个String类型的数组，里面有一些值可能为nil。 1let nam">
 
 
 
@@ -113,9 +114,9 @@
 
 
 
-  <link rel="canonical" href="http://isandboy.github.io/archives/2017/04/"/>
+  <link rel="canonical" href="http://isandboy.github.io/2018/01/30/Optionals/"/>
 
-  <title> 归档 | 灯火阑珊 </title>
+  <title> Swift Non-Nil Values In An Array Of Optionals | 灯火阑珊 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -136,7 +137,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -227,66 +228,161 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 12 篇日志。 继续努力。
-    </span>
-
+  <div id="posts" class="posts-expand">
     
 
-      
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Swift Non-Nil Values In An Array Of Optionals
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-01-30T22:06:11+08:00" content="2018-01-30">
+              2018-01-30
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
+        <p>原文：<a href="https://useyourloaf.com/blog/swift-non-nil-values-in-an-array-of-optionals/" target="_blank" rel="external">https://useyourloaf.com/blog/swift-non-nil-values-in-an-array-of-optionals/</a></p>
+<p>我发现除了配合我们超级熟悉的 <code>switch</code>语句，很难想起有别的地方使用 <code>case</code>语句，这里有个很有用的案例，当你需要对可选的数组中非空值做一些操作时。</p>
+<p>这是一个使用场景，一个<code>String</code>类型的数组，里面有一些值可能为<code>nil</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">let names = [&quot;Tom&quot;, nil, &quot;Fred&quot;]</div></pre></td></tr></table></figure>
+<p><code>names</code>的类型是 <code>[String?]</code>, 一个可选的字符串数组，假设我想对数组里每一个非空的值做一些操作:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">func doSomething(_ name: String) &#123;</div><div class="line">  print(name)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个<code>doSomething</code>函数的参数是一个非可选的<code>String</code>类型. 可以通过<code>if let</code>语句遍历数组获取non-nil值 :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">for name in names &#123;</div><div class="line">  if let name = name &#123; doSomething(name) &#125;</div><div class="line">&#125;</div><div class="line">// Tom</div><div class="line">// Fred</div></pre></td></tr></table></figure>
+<p>这是记住<code>flatMap</code>高阶函数跳过<code>nil</code>值的好时机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">for name in names.flatMap(&#123; $0 &#125;) &#123;</div><div class="line">  doSomething(name)</div><div class="line">&#125;</div><div class="line">// Tom</div><div class="line">// Fred</div></pre></td></tr></table></figure>
+<p>这个方法是不差，但我喜欢用<code>case</code>语句与可选项匹配的方式:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">for case let name? in names &#123;</div><div class="line">  doSomething(name)</div><div class="line">&#125;</div><div class="line">// Tom</div><div class="line">// Fred</div></pre></td></tr></table></figure>
+<p><code>enum</code> 有两个语句:<code>.none</code>和<code>.some(T)</code>。上面例子可选项(<code>let name?</code>) 是一个简写，用于匹配 <code>.some</code>。我们也可以用<code>.some</code>来写:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for case .some(let name) in names &#123;</div><div class="line">  doSomething(name)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>匹配 <code>nil</code> 元素的范式可以这样写:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for case .none in names &#123;</div><div class="line">  print(&quot;found nil&quot;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你可以用 <code>?</code> 范式来匹配可选项中的特定值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for case &quot;Fred&quot;？ in names &#123;</div><div class="line">  print(&quot;Found Fred&quot;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="使用-where-和-case"><a href="#使用-where-和-case" class="headerlink" title="使用 where 和 case"></a>使用 where 和 case</h3><p>你可以更进一步，添加一个<code>where</code>子句作为数组的过滤器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">let scores = [1,5,8,3,10,nil,7]</div><div class="line">for case let score? in scores where score &gt; 6 &#123;</div><div class="line">  print(score)</div><div class="line">&#125;</div><div class="line">// 8</div><div class="line">// 10</div><div class="line">// 7</div></pre></td></tr></table></figure>
+<p>在执行过滤操作之前，我更喜欢使用<code>flatMap</code>删除nil值，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for score in scores.flatMap(&#123; $0 &#125;).filter(&#123; $0 &gt; 6 &#125;) &#123;</div><div class="line">  print(score)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3><p><a href="https://useyourloaf.com/blog/swift-guide-to-map-filter-reduce/" target="_blank" rel="external">Swift Guide to Map Filter Reduce</a></p>
+
+      
+    </div>
+
+    <div>
+      
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/15/rx-mvvm/" rel="next" title="Reactive-MVVM">
+                <i class="fa fa-chevron-left"></i> Reactive-MVVM
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
         </div>
       
-      
 
       
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/11/FMDB-use/" itemprop="url">
-              
-                <span itemprop="name">FMDB使用</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-11T20:57:24+08:00"
-              content="2017-04-11" >
-          04-11
-        </time>
-      </div>
-
-    </header>
+      
+    </footer>
   </article>
 
 
 
-    
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
 
-  </section>
-
-  
-
+      
+    </div>
+  </div>
 
 
           </div>
@@ -294,6 +390,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -313,8 +413,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -350,6 +459,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-where-和-case"><span class="nav-number">1.</span> <span class="nav-text">使用 where 和 case</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推荐阅读"><span class="nav-number">2.</span> <span class="nav-text">推荐阅读</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -446,11 +566,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
 
 
   
