@@ -90,7 +90,7 @@
 <meta property="og:url" content="http://isandboy.github.io/2017/05/01/Making-Cocoapods/index.html">
 <meta property="og:site_name" content="灯火阑珊">
 <meta property="og:description" content="这篇文章主要是介绍怎么去创建和维护一个Cocoapods  Using Pod Lib Create Getting setup with Trunk  Getting setup with Trunk使用Pod创建库，打开终端敲入以下命令： 1pod lib create MyLirary NOTE: 如果你想要使用你自己的pod-template去创建Pod库，你可以在上面的命令后面追加--t">
-<meta property="og:updated_time" content="2017-07-28T16:28:20.000Z">
+<meta property="og:updated_time" content="2019-03-15T06:26:54.114Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cocoapods创建私有库">
 <meta name="twitter:description" content="这篇文章主要是介绍怎么去创建和维护一个Cocoapods  Using Pod Lib Create Getting setup with Trunk  Getting setup with Trunk使用Pod创建库，打开终端敲入以下命令： 1pod lib create MyLirary NOTE: 如果你想要使用你自己的pod-template去创建Pod库，你可以在上面的命令后面追加--t">
@@ -318,9 +318,9 @@
 </ol>
 <p>说明：关于 <code>.podspec</code> 文件的写法说明也可以参考<a href="http://www.cnblogs.com/ALongWay/p/6541289.html" target="_blank" rel="external">CocoaPods学习系列4——进阶用法</a></p>
 <h2 id="Private-Pods"><a href="#Private-Pods" class="headerlink" title="Private Pods"></a>Private Pods</h2><p><strong><em>1. Create a Private Spec Repo</em></strong><br>参考：<a href="https://guides.cocoapods.org/making/private-cocoapods.html" target="_blank" rel="external">https://guides.cocoapods.org/making/private-cocoapods.html</a></p>
-<h2 id="私有远端仓库"><a href="#私有远端仓库" class="headerlink" title="私有远端仓库"></a>私有远端仓库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
-<p>##</p>
-<p>待修改</p>
+<!-- ## 私有远端仓库
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+<h2 id="–-gt"><a href="#–-gt" class="headerlink" title="–&gt;"></a>–&gt;</h2><!-- 待修改 -->
 <h2 id="验证podspec有效性"><a href="#验证podspec有效性" class="headerlink" title="验证podspec有效性"></a>验证podspec有效性</h2><p>当开发完私有库之后，把配置库，提交到私有创库，或者cocoapods的公有库仓库，流程如下</p>
 <p><strong><em>1. 本地验证仓库有效性</em></strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod lib lint --source --use-libraries --allow-warnings --verbose</div></pre></td></tr></table></figure>
@@ -361,16 +361,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/01/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2017/05/01/Cocoapods 使用/" rel="next" title="Cocoapods 使用">
+                <i class="fa fa-chevron-left"></i> Cocoapods 使用
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/01/Cocoapods 使用/" rel="prev" title="Cocoapods 使用">
-                Cocoapods 使用 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/30/multithread/" rel="prev" title="iOS多线程">
+                iOS多线程 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -462,7 +462,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -494,7 +494,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Getting-setup-with-Trunk"><span class="nav-number">1.</span> <span class="nav-text">Getting setup with Trunk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Getting-setup-with-Trunk-1"><span class="nav-number">2.</span> <span class="nav-text">Getting setup with Trunk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Private-Pods"><span class="nav-number">3.</span> <span class="nav-text">Private Pods</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#私有远端仓库"><span class="nav-number">4.</span> <span class="nav-text">私有远端仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证podspec有效性"><span class="nav-number">5.</span> <span class="nav-text">验证podspec有效性</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Getting-setup-with-Trunk"><span class="nav-number">1.</span> <span class="nav-text">Getting setup with Trunk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Getting-setup-with-Trunk-1"><span class="nav-number">2.</span> <span class="nav-text">Getting setup with Trunk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Private-Pods"><span class="nav-number">3.</span> <span class="nav-text">Private Pods</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证podspec有效性"><span class="nav-number">4.</span> <span class="nav-text">验证podspec有效性</span></a></li></ol></div>
             
           </div>
         </section>
@@ -513,7 +513,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

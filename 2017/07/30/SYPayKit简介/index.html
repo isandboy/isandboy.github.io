@@ -90,7 +90,7 @@
 <meta property="og:url" content="http://isandboy.github.io/2017/07/30/SYPayKit简介/index.html">
 <meta property="og:site_name" content="灯火阑珊">
 <meta property="og:description" content="问题一款产品，随着版本的迭代，难免会加入支付功能。而现在的主流支付方式，主要有支付宝、微信、银联支付、苹果银联支付等。每家支付SDK提供的对外接口不统一，会引起使用起来的混乱，以及维护成本的增加。比如，在支付成功后由第三方app回调回来：123456789101112131415161718192021- (BOOL)application:(UIApplication *)application">
-<meta property="og:updated_time" content="2017-07-30T09:38:33.000Z">
+<meta property="og:updated_time" content="2019-03-15T06:28:33.395Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SYPayKit简介">
 <meta name="twitter:description" content="问题一款产品，随着版本的迭代，难免会加入支付功能。而现在的主流支付方式，主要有支付宝、微信、银联支付、苹果银联支付等。每家支付SDK提供的对外接口不统一，会引起使用起来的混乱，以及维护成本的增加。比如，在支付成功后由第三方app回调回来：123456789101112131415161718192021- (BOOL)application:(UIApplication *)application">
@@ -317,7 +317,8 @@
 </li>
 </ol>
 <p>NOTE: 有的做法是把支付方式，放到生成的订单字典里面，由此去区分是哪种支付方式如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NSDictionary *order = @&#123;kMSPayOrderKey:@&quot;201506221028315777129&quot;, @&quot;payType&quot;: @&quot;alipay&quot;&#125;;</div></pre></td></tr></table></figure></p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>安装：目前还处于测试阶段，所以版本还未固定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod &quot;SYPayKit&quot;, :git =&gt; &apos;https://github.com/isandboy/SYPayKit&apos;</div></pre></td></tr></table></figure></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><!-- 安装：目前还处于测试阶段，所以版本还未固定 -->
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod &quot;SYPayKit&quot;, :git =&gt; &apos;https://github.com/isandboy/SYPayKit&apos;</div></pre></td></tr></table></figure>
 <p>默认包含支付宝、微信、银联支付</p>
 <p>目前支持以下几种支付方式</p>
 <p>Alipay （支付宝）</p>
@@ -462,7 +463,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -513,7 +514,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

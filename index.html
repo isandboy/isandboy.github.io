@@ -768,7 +768,8 @@
 </li>
 </ol>
 <p>NOTE: 有的做法是把支付方式，放到生成的订单字典里面，由此去区分是哪种支付方式如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NSDictionary *order = @&#123;kMSPayOrderKey:@&quot;201506221028315777129&quot;, @&quot;payType&quot;: @&quot;alipay&quot;&#125;;</div></pre></td></tr></table></figure></p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>安装：目前还处于测试阶段，所以版本还未固定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod &quot;SYPayKit&quot;, :git =&gt; &apos;https://github.com/isandboy/SYPayKit&apos;</div></pre></td></tr></table></figure></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><!-- 安装：目前还处于测试阶段，所以版本还未固定 -->
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod &quot;SYPayKit&quot;, :git =&gt; &apos;https://github.com/isandboy/SYPayKit&apos;</div></pre></td></tr></table></figure>
 <p>默认包含支付宝、微信、银联支付</p>
 <p>目前支持以下几种支付方式</p>
 <p>Alipay （支付宝）</p>
@@ -893,6 +894,11 @@
 <h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>当没有使用到第三方静态库中的相关API时，链接器帮我们链接动态库的时候可能并不会把静态库吸附进来。我们手动在build Setting的other link flags加上-all_load标记</p>
 <p>如果是通过 <code>pod lib create</code> 命令去创建模块，可以在<code>.podspec</code> 文件里面加入如下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">spec.pod_target_xcconfig = &#123; &apos;OTHER_LDFLAGS&apos; =&gt; &apos;-all_load&apos; &#125;</div></pre></td></tr></table></figure></p>
 <h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p><a href="http://www.cocoachina.com/ios/20170427/19136.html" target="_blank" rel="external">组件化-动态库实战</a></p>
+<h3 id="如何查看一个库是静态库还是动态库"><a href="#如何查看一个库是静态库还是动态库" class="headerlink" title="如何查看一个库是静态库还是动态库"></a>如何查看一个库是静态库还是动态库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">file ***.a </div><div class="line">file ***.framework/***</div></pre></td></tr></table></figure>
+<p><img src="/img/staticLibrary.png" alt="Alt text"></p>
+<p><img src="/img/dynamicLibrary.png" alt="Alt text"></p>
+<p>带<code>dynamically</code>标记的为动态库，有些库虽然也是<code>.framework</code>格式，但实际上是静态库，可以通过上面方式查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">lipo -info ***.a  </div><div class="line">lipo -info ***.framework/xxx</div><div class="line"></div><div class="line">lipo -thin armv7 xxx.a -output xxx_armv7.a</div><div class="line">···</div><div class="line">···</div><div class="line">···</div><div class="line">lipo -create xxx_armv7.a xxx_x86_64.a -output xxx_new.a</div></pre></td></tr></table></figure>
 
           
         
@@ -988,6 +994,278 @@
           
             <h2 id="Linux下查看端口号所使用的进程号："><a href="#Linux下查看端口号所使用的进程号：" class="headerlink" title="Linux下查看端口号所使用的进程号："></a>Linux下查看端口号所使用的进程号：</h2><p>使用lsof命令： lsof –i:端口号</p>
 <h2 id="Linux下查看进程占用端口"><a href="#Linux下查看进程占用端口" class="headerlink" title="Linux下查看进程占用端口:"></a>Linux下查看进程占用端口:</h2><p>查看程序对应进程号：ps –ef|grep 进程名</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/30/multithread/" itemprop="url">
+                  iOS多线程
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-30T22:06:11+08:00" content="2017-05-30">
+              2017-05-30
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://www.jianshu.com/p/162ba1b0c495" target="_blank" rel="external">多线程</a></p>
+<p><a href="http://www.cocoachina.com/ios/20180413/22998.html" target="_blank" rel="external">多线程(面试题)汇总</a></p>
+<p>iOS多线程有四套多线程方案：</p>
+<ul>
+<li>Pthreads</li>
+<li>NSThread</li>
+<li>GCD</li>
+<li>NSOperation &amp; NSOperationQueue</li>
+</ul>
+<p><a href="https://www.jianshu.com/p/228403206664" target="_blank" rel="external">dispatch_group</a></p>
+<h2 id="NSThread"><a href="#NSThread" class="headerlink" title="NSThread"></a>NSThread</h2><p>不常用，主要用到<code>[NSThread currentThread]</code>函数来获取当前线程</p>
+<h2 id="GCD-任务和队列"><a href="#GCD-任务和队列" class="headerlink" title="GCD (任务和队列)"></a>GCD (任务和队列)</h2><p>如果dispatch_group_async里执行的是异步代码dispatch_group_notify会直接触发而不会等待异步任务完成，而dispatch_group_enter、和dispatch_group_leave则不会有这个问题，它们只需要在任务开始前enter结束后leave即可达到线程同步的效果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">dispatch_queue_t dispatchQueue = dispatch_queue_create(&quot;ted.queue.next1&quot;, DISPATCH_QUEUE_CONCURRENT);</div><div class="line">    dispatch_queue_t globalQueue = dispatch_get_global_queue(0, 0);</div><div class="line">    dispatch_group_t dispatchGroup = dispatch_group_create();</div><div class="line">    dispatch_group_enter(dispatchGroup);</div><div class="line">    dispatch_group_async(dispatchGroup, dispatchQueue, ^()&#123;</div><div class="line">        </div><div class="line">        dispatch_async(globalQueue, ^&#123;</div><div class="line">            </div><div class="line">            sleep(5);</div><div class="line">            NSLog(@&quot;任务一完成&quot;);</div><div class="line">            dispatch_group_leave(dispatchGroup);</div><div class="line">        &#125;);</div><div class="line">    &#125;);</div><div class="line">    dispatch_group_enter(dispatchGroup);</div><div class="line">    dispatch_group_async(dispatchGroup, dispatchQueue, ^()&#123;</div><div class="line">        </div><div class="line">        dispatch_async(globalQueue, ^&#123;</div><div class="line">            </div><div class="line">            sleep(8);</div><div class="line">            NSLog(@&quot;任务二完成&quot;);</div><div class="line">            dispatch_group_leave(dispatchGroup);</div><div class="line">        &#125;);</div><div class="line">    &#125;);</div><div class="line">    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^()&#123;</div><div class="line">        NSLog(@&quot;notify：任务都完成了&quot;);</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">2018-08-21 21:38:20.803437+0800 Demo[19819:13724794] 任务一完成</div><div class="line">2018-08-21 21:38:23.800334+0800 Demo[19819:13724792] 任务二完成</div><div class="line">2018-08-21 21:38:23.800677+0800 Demo[19819:13724748] notify：任务都完成了</div></pre></td></tr></table></figure>
+<p>如果block块里面执行的是同步代码，则以用<code>dispatch_group_enter dispatch_group_leave</code>和<code>dispatch_group_async</code>实现效果一样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">方式一：</div><div class="line">    dispatch_group_t group = dispatch_group_create();</div><div class="line">    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</div><div class="line">    dispatch_group_enter(group);</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        NSLog(@&quot;task A&quot;);</div><div class="line">        sleep(5);</div><div class="line">        NSLog(@&quot;task a done&quot;);</div><div class="line">        dispatch_group_leave(group);</div><div class="line">    &#125;);</div><div class="line">    dispatch_group_enter(group);</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        NSLog(@&quot;task B&quot;);</div><div class="line">        sleep(3);</div><div class="line">        NSLog(@&quot;task b done&quot;);</div><div class="line">        dispatch_group_leave(group);</div><div class="line">    &#125;);</div><div class="line">    dispatch_group_notify(group, queue, ^&#123;</div><div class="line">        NSLog(@&quot;done&quot;);</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">方式二：</div><div class="line">        dispatch_group_t group = dispatch_group_create();</div><div class="line">    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</div><div class="line">    dispatch_group_async(group, queue, ^&#123;</div><div class="line">        NSLog(@&quot;task A&quot;);</div><div class="line">        sleep(5);</div><div class="line">        NSLog(@&quot;task a done&quot;);</div><div class="line">    &#125;);</div><div class="line">    dispatch_group_async(group, queue, ^&#123;</div><div class="line">        NSLog(@&quot;task B&quot;);</div><div class="line">        sleep(3);</div><div class="line">        NSLog(@&quot;task b done&quot;);</div><div class="line">    &#125;);</div><div class="line">    dispatch_group_notify(group, queue, ^&#123;</div><div class="line">        NSLog(@&quot;done&quot;);</div><div class="line">    &#125;);</div></pre></td></tr></table></figure>
+<h3 id="串行队列"><a href="#串行队列" class="headerlink" title="串行队列"></a>串行队列</h3><ol>
+<li>同步串行，不会创建新线程，各个任务在主线程中，依次执行</li>
+<li>异步串行，只创建一次新线程，各个任务依次执行<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">//    create queue</div><div class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;com.example.gcd.queuename&quot;, DISPATCH_QUEUE_SERIAL); //DISPATCH_QUEUE_CONCURRENT</div><div class="line">//    串行同步不会创建线程</div><div class="line">    dispatch_sync(queue, ^&#123;</div><div class="line">        NSLog(@&quot;serial queue sync task1  --%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;);</div><div class="line">    dispatch_sync(queue, ^&#123;</div><div class="line">        NSLog(@&quot;serial queue sync task2 --%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;);</div><div class="line">//    串行异步会创建线程，当前队列中第一次异步会创建线程之后不会在重新创建</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        NSLog(@&quot;serial queue async task1  --%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;);</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        NSLog(@&quot;serial queue async task2 --%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;);</div><div class="line">    dispatch_sync(queue, ^&#123;</div><div class="line">        NSLog(@&quot;serial queue sync task3 --%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;);</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        NSLog(@&quot;serial queue async task3 --%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    serial queue sync task1  --&lt;NSThread: 0x600000069480&gt;&#123;number = 1, name = main&#125;</div><div class="line">    serial queue sync task2 --&lt;NSThread: 0x600000069480&gt;&#123;number = 1, name = main&#125;</div><div class="line">    serial queue async task1  --&lt;NSThread: 0x60000066cdc0&gt;&#123;number = 6, name = (null)&#125;</div><div class="line">    serial queue async task2 --&lt;NSThread: 0x60000066cdc0&gt;&#123;number = 6, name = (null)&#125;</div><div class="line">    serial queue sync task3 --&lt;NSThread: 0x600000069480&gt;&#123;number = 1, name = main&#125;</div><div class="line">    serial queue async task3 --&lt;NSThread: 0x60000066cdc0&gt;&#123;number = 6, name = (null)&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="并发队列"><a href="#并发队列" class="headerlink" title="并发队列"></a>并发队列</h3><ol>
+<li>同步并发，不会创建新线程，各个任务在主线程中，依次执行</li>
+<li>异步并发，每async一次创建一次新线程，任务的执行顺序会根据处理内容和系统状态发生改变</li>
+</ol>
+<h2 id="NSOperation-amp-NSOperationQueue"><a href="#NSOperation-amp-NSOperationQueue" class="headerlink" title="NSOperation &amp; NSOperationQueue"></a><a href="https://www.jianshu.com/p/4b1d77054b35" target="_blank" rel="external">NSOperation &amp; NSOperationQueue</a></h2><p>NSOperation是面向对象的。是在GCD基础上封装的，NSOperation和 NSOperationQueue分别对应GCD的任务和队列，可以设置最大并发量，task之间的依赖关系等</p>
+<p>一般不直接用<code>NSOperationQueue</code>，用它的几个子类来操作，否者需要自己管理线程</p>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><ol>
+<li>子线程同时执行ABC三个同步任务、全部执行完成再在子线程执行三个同步任务EDF<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div></pre></td><td class="code"><pre><div class="line">方式一: group</div><div class="line">    dispatch_group_t group = dispatch_group_create();</div><div class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;com.emoney.cn&quot;, DISPATCH_QUEUE_CONCURRENT);</div><div class="line">    dispatch_group_async(group, queue, ^&#123;</div><div class="line">        NSLog(@&quot;task A&quot;);</div><div class="line">    &#125;);</div><div class="line">    dispatch_group_async(group, queue, ^&#123;</div><div class="line">        NSLog(@&quot;task B&quot;);</div><div class="line">    &#125;);</div><div class="line">    dispatch_group_async(group, queue, ^&#123;</div><div class="line">        NSLog(@&quot;task C&quot;);</div><div class="line">    &#125;);</div><div class="line">    dispatch_group_notify(group, queue, ^&#123;</div><div class="line">        dispatch_sync(queue, ^&#123;</div><div class="line">            NSLog(@&quot;task D, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">        &#125;);</div><div class="line">        dispatch_sync(queue, ^&#123;</div><div class="line">            NSLog(@&quot;task E&quot;);</div><div class="line">        &#125;);</div><div class="line">        dispatch_sync(queue, ^&#123;</div><div class="line">            NSLog(@&quot;task F&quot;);</div><div class="line">        &#125;);</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">方式二：dispatch_barrier_async</div><div class="line">The queue you specify should be a concurrent queue that you create yourself using the dispatch_queue_create function. If the queue you pass to this function is a serial queue or one of the global concurrent queues, this function behaves like the dispatch_sync function.</div><div class="line"></div><div class="line">官方说明大意:在使用栅栏函数时.使用自定义队列才有意义,如果用的是串行队列或者系统提供的全局并发队列,这个栅栏函数的作用等同于一个同步函数的作用</div><div class="line"></div><div class="line"> dispatch_queue_t queue = dispatch_queue_create(&quot;com.emoney.cn&quot;, DISPATCH_QUEUE_CONCURRENT);</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">       NSLog(@&quot;task A, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;);</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        NSLog(@&quot;task B, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;);</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        NSLog(@&quot;task C, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;);</div><div class="line">    </div><div class="line">    NSLog(@&quot;ABC&quot;);</div><div class="line">    dispatch_barrier_async(queue, ^&#123;</div><div class="line">        NSLog(@&quot;task ABC Done&quot;);</div><div class="line">    &#125;);</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        NSLog(@&quot;task D, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;);</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        NSLog(@&quot;task E, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;);</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        NSLog(@&quot;task F, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;);</div><div class="line">    NSLog(@&quot;DEF&quot;);</div><div class="line"></div><div class="line">方式三：NSOperationQueue  dependency</div><div class="line"></div><div class="line">    NSOperationQueue *queue = [[NSOperationQueue alloc] init];</div><div class="line">    NSBlockOperation *operationA = [NSBlockOperation blockOperationWithBlock:^&#123;</div><div class="line">        NSLog(@&quot;task A, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;];</div><div class="line">    NSBlockOperation *operationB = [NSBlockOperation blockOperationWithBlock:^&#123;</div><div class="line">        NSLog(@&quot;task B, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;];</div><div class="line">    NSBlockOperation *operationC = [NSBlockOperation blockOperationWithBlock:^&#123;</div><div class="line">        NSLog(@&quot;task C, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;];</div><div class="line">    NSBlockOperation *operationD = [NSBlockOperation blockOperationWithBlock:^&#123;</div><div class="line">        NSLog(@&quot;task D, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;];</div><div class="line">    NSBlockOperation *operationE = [NSBlockOperation blockOperationWithBlock:^&#123;</div><div class="line">        NSLog(@&quot;task E, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;];</div><div class="line">    NSBlockOperation *operationF = [NSBlockOperation blockOperationWithBlock:^&#123;</div><div class="line">        NSLog(@&quot;task F, thread:%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;];</div><div class="line">    </div><div class="line">    [operationD addDependency:operationA];</div><div class="line">    [operationD addDependency:operationB];</div><div class="line">    [operationD addDependency:operationC];</div><div class="line">    </div><div class="line">    [operationE addDependency:operationA];</div><div class="line">    [operationE addDependency:operationB];</div><div class="line">    [operationE addDependency:operationC];</div><div class="line">    </div><div class="line">    [operationF addDependency:operationA];</div><div class="line">    [operationF addDependency:operationB];</div><div class="line">    [operationF addDependency:operationC];</div><div class="line">    </div><div class="line">    [queue addOperation:operationA];</div><div class="line">    [queue addOperation:operationB];</div><div class="line">    [queue addOperation:operationC];</div><div class="line">    [queue addOperation:operationD];</div><div class="line">    [queue addOperation:operationE];</div><div class="line">    [queue addOperation:operationF];</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="dispatch-semaphore（信号量）的理解及使用"><a href="#dispatch-semaphore（信号量）的理解及使用" class="headerlink" title="dispatch_semaphore（信号量）的理解及使用"></a>dispatch_semaphore（信号量）的理解及使用</h3><p>问题描述：</p>
+<p>假设现在系统有两个空闲资源可以被利用，但同一时间却有三个线程要进行访问，这种情况下，该如何处理呢？</p>
+<p>或者</p>
+<p>我们要下载很多图片，并发异步进行，每个下载都会开辟一个新线程，可是我们又担心太多线程肯定cpu吃不消，那么我们这里也可以用信号量控制一下最大开辟线程数。</p>
+<p>定义： </p>
+<p>1、信号量：就是一种可用来控制访问资源的数量的标识，设定了一个信号量，在线程访问之前，加上信号量的处理，则可告知系统按照我们指定的信号量数量来执行多个线程。</p>
+<p>其实，这有点类似锁机制了，只不过信号量都是系统帮助我们处理了，我们只需要在执行线程之前，设定一个信号量值，并且在使用时，加上信号量处理方法就行了。</p>
+<p>注意，正常的使用顺序是先降低然后再提高，这两个函数通常成对使用。　（具体可参考下面的代码示例）　</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">dispatch_semaphore_t semaphore = dispatch_semaphore_create(2);</div><div class="line">    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);</div><div class="line">        NSLog(@&quot;task 1&quot;);</div><div class="line">        sleep(1);</div><div class="line">        NSLog(@&quot;complete task 1&quot;);</div><div class="line">        dispatch_semaphore_signal(semaphore);</div><div class="line">    &#125;);</div><div class="line">    </div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);</div><div class="line">        NSLog(@&quot;task 2&quot;);</div><div class="line">        sleep(1);</div><div class="line">        NSLog(@&quot;complete task 2&quot;);</div><div class="line">        dispatch_semaphore_signal(semaphore);</div><div class="line">    &#125;);</div><div class="line">    dispatch_async(queue, ^&#123;</div><div class="line">        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);</div><div class="line">        NSLog(@&quot;task 3&quot;);</div><div class="line">        sleep(1);</div><div class="line">        NSLog(@&quot;complete task 3&quot;);</div><div class="line">        dispatch_semaphore_signal(semaphore);</div><div class="line">    &#125;);</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/01/Making-Cocoapods/" itemprop="url">
+                  Cocoapods创建私有库
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-01T08:24:00+08:00" content="2017-05-01">
+              2017-05-01
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这篇文章主要是介绍怎么去创建和维护一个Cocoapods</p>
+<ol>
+<li>Using Pod Lib Create</li>
+<li>Getting setup with Trunk</li>
+</ol>
+<h2 id="Getting-setup-with-Trunk"><a href="#Getting-setup-with-Trunk" class="headerlink" title="Getting setup with Trunk"></a>Getting setup with Trunk</h2><p>使用Pod创建库，打开终端敲入以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod lib create MyLirary</div></pre></td></tr></table></figure>
+<p>NOTE: 如果你想要使用你自己的<strong>pod-template</strong>去创建Pod库，你可以在上面的命令后面追加<code>--template-url=url</code>参数，其中url是你的git repo库地址。<br>如果不追加参数默认拉取的模板地址是<a href="https://github.com/CocoaPods/pod-template" target="_blank" rel="external">https://github.com/CocoaPods/pod-template</a></p>
+<p>敲入以上命令回车后，会让你回答几个问题，按照提示填入就行。</p>
+<p>创建Project之后会，会自动运行<code>pod install</code>命令，让我们来看看Cocoapods给我们生成的文件目录结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">$ tree MyLib -L 2</div><div class="line"></div><div class="line">  MyLib</div><div class="line">  ├── .travis.yml</div><div class="line">  ├── _Pods.xcproject</div><div class="line">  ├── Example</div><div class="line">  │   ├── MyLib</div><div class="line">  │   ├── MyLib.xcodeproj</div><div class="line">  │   ├── MyLib.xcworkspace</div><div class="line">  │   ├── Podfile</div><div class="line">  │   ├── Podfile.lock</div><div class="line">  │   ├── Pods</div><div class="line">  │   └── Tests</div><div class="line">  ├── LICENSE</div><div class="line">  ├── MyLib.podspec</div><div class="line">  ├── Pod</div><div class="line">  │   ├── Assets</div><div class="line">  │   └── Classes</div><div class="line">  │     └── RemoveMe.[swift/m]</div><div class="line">  └── README.md</div></pre></td></tr></table></figure>
+<ul>
+<li>.travis.yml - 一个travis-ci配置文件.</li>
+<li>_Pods.xcproject - 支持Carthage的对你Pod’s Project的链接.</li>
+<li>LICENSE - 默认是 MIT License.</li>
+<li>MyLib.podspec - 你的Library的配置文件.</li>
+<li>README.md - a default README in markdown.</li>
+<li>RemoveMe.swift/m - 无用文件删除即可.</li>
+<li>Pod - 放置你的库代码和资源的文件夹</li>
+<li>Example - Demo，方便你去调试你的库</li>
+</ul>
+<h2 id="Getting-setup-with-Trunk-1"><a href="#Getting-setup-with-Trunk-1" class="headerlink" title="Getting setup with Trunk"></a>Getting setup with Trunk</h2><p>关于怎么发布自己的Pods到Cocoapods trunk，</p>
+<p>请参考：</p>
+<ol>
+<li><a href="http://www.tuicool.com/articles/6FF7fi" target="_blank" rel="external">http://www.tuicool.com/articles/6FF7fi</a></li>
+<li><a href="https://guides.cocoapods.org/making/getting-setup-with-trunk.html" target="_blank" rel="external">https://guides.cocoapods.org/making/getting-setup-with-trunk.html</a></li>
+</ol>
+<p>说明：关于 <code>.podspec</code> 文件的写法说明也可以参考<a href="http://www.cnblogs.com/ALongWay/p/6541289.html" target="_blank" rel="external">CocoaPods学习系列4——进阶用法</a></p>
+<h2 id="Private-Pods"><a href="#Private-Pods" class="headerlink" title="Private Pods"></a>Private Pods</h2><p><strong><em>1. Create a Private Spec Repo</em></strong><br>参考：<a href="https://guides.cocoapods.org/making/private-cocoapods.html" target="_blank" rel="external">https://guides.cocoapods.org/making/private-cocoapods.html</a></p>
+<!-- ## 私有远端仓库
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+<h2 id="–-gt"><a href="#–-gt" class="headerlink" title="–&gt;"></a>–&gt;</h2><!-- 待修改 -->
+<h2 id="验证podspec有效性"><a href="#验证podspec有效性" class="headerlink" title="验证podspec有效性"></a>验证podspec有效性</h2><p>当开发完私有库之后，把配置库，提交到私有创库，或者cocoapods的公有库仓库，流程如下</p>
+<p><strong><em>1. 本地验证仓库有效性</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod lib lint --source --use-libraries --allow-warnings --verbose</div></pre></td></tr></table></figure>
+<p>其中pod lib lint 之后的参数都是可选参数</p>
+<ul>
+<li>–source：当开发私有库的时候，</li>
+<li>–use-libraries: podspec文件里面通过pod dependencies指定的依赖，是否包含静态库，当不加此参数会验证失败。因为swift开发的库，不能包含静态库，所以此参数只针对Objective-C</li>
+<li>–allow-warnings：是否忽略警告。</li>
+<li>–verbose：详细log</li>
+</ul>
+<p><strong><em>2. 提交代码</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">git add .</div><div class="line">git ci -m&quot;edit commit message&quot;</div><div class="line">git tag 0.1.0</div><div class="line">git push origin master tags</div></pre></td></tr></table></figure>
+<p><strong><em>3. 推送podspec配置文件到私有库</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod repo push SYSpecs [MyLib.podspec] --use-libraries --allow-warnings --verbose</div></pre></td></tr></table></figure>
+<p>其中参数与验证参数一个含义，验证的时候加了哪些可选参数，推送配置文件到私有库的时候也要加</p>
 
           
         
@@ -1161,248 +1439,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/01/Making-Cocoapods/" itemprop="url">
-                  Cocoapods创建私有库
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-01T08:24:00+08:00" content="2017-05-01">
-              2017-05-01
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这篇文章主要是介绍怎么去创建和维护一个Cocoapods</p>
-<ol>
-<li>Using Pod Lib Create</li>
-<li>Getting setup with Trunk</li>
-</ol>
-<h2 id="Getting-setup-with-Trunk"><a href="#Getting-setup-with-Trunk" class="headerlink" title="Getting setup with Trunk"></a>Getting setup with Trunk</h2><p>使用Pod创建库，打开终端敲入以下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod lib create MyLirary</div></pre></td></tr></table></figure>
-<p>NOTE: 如果你想要使用你自己的<strong>pod-template</strong>去创建Pod库，你可以在上面的命令后面追加<code>--template-url=url</code>参数，其中url是你的git repo库地址。<br>如果不追加参数默认拉取的模板地址是<a href="https://github.com/CocoaPods/pod-template" target="_blank" rel="external">https://github.com/CocoaPods/pod-template</a></p>
-<p>敲入以上命令回车后，会让你回答几个问题，按照提示填入就行。</p>
-<p>创建Project之后会，会自动运行<code>pod install</code>命令，让我们来看看Cocoapods给我们生成的文件目录结构</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">$ tree MyLib -L 2</div><div class="line"></div><div class="line">  MyLib</div><div class="line">  ├── .travis.yml</div><div class="line">  ├── _Pods.xcproject</div><div class="line">  ├── Example</div><div class="line">  │   ├── MyLib</div><div class="line">  │   ├── MyLib.xcodeproj</div><div class="line">  │   ├── MyLib.xcworkspace</div><div class="line">  │   ├── Podfile</div><div class="line">  │   ├── Podfile.lock</div><div class="line">  │   ├── Pods</div><div class="line">  │   └── Tests</div><div class="line">  ├── LICENSE</div><div class="line">  ├── MyLib.podspec</div><div class="line">  ├── Pod</div><div class="line">  │   ├── Assets</div><div class="line">  │   └── Classes</div><div class="line">  │     └── RemoveMe.[swift/m]</div><div class="line">  └── README.md</div></pre></td></tr></table></figure>
-<ul>
-<li>.travis.yml - 一个travis-ci配置文件.</li>
-<li>_Pods.xcproject - 支持Carthage的对你Pod’s Project的链接.</li>
-<li>LICENSE - 默认是 MIT License.</li>
-<li>MyLib.podspec - 你的Library的配置文件.</li>
-<li>README.md - a default README in markdown.</li>
-<li>RemoveMe.swift/m - 无用文件删除即可.</li>
-<li>Pod - 放置你的库代码和资源的文件夹</li>
-<li>Example - Demo，方便你去调试你的库</li>
-</ul>
-<h2 id="Getting-setup-with-Trunk-1"><a href="#Getting-setup-with-Trunk-1" class="headerlink" title="Getting setup with Trunk"></a>Getting setup with Trunk</h2><p>关于怎么发布自己的Pods到Cocoapods trunk，</p>
-<p>请参考：</p>
-<ol>
-<li><a href="http://www.tuicool.com/articles/6FF7fi" target="_blank" rel="external">http://www.tuicool.com/articles/6FF7fi</a></li>
-<li><a href="https://guides.cocoapods.org/making/getting-setup-with-trunk.html" target="_blank" rel="external">https://guides.cocoapods.org/making/getting-setup-with-trunk.html</a></li>
-</ol>
-<p>说明：关于 <code>.podspec</code> 文件的写法说明也可以参考<a href="http://www.cnblogs.com/ALongWay/p/6541289.html" target="_blank" rel="external">CocoaPods学习系列4——进阶用法</a></p>
-<h2 id="Private-Pods"><a href="#Private-Pods" class="headerlink" title="Private Pods"></a>Private Pods</h2><p><strong><em>1. Create a Private Spec Repo</em></strong><br>参考：<a href="https://guides.cocoapods.org/making/private-cocoapods.html" target="_blank" rel="external">https://guides.cocoapods.org/making/private-cocoapods.html</a></p>
-<h2 id="私有远端仓库"><a href="#私有远端仓库" class="headerlink" title="私有远端仓库"></a>私有远端仓库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
-<p>##</p>
-<p>待修改</p>
-<h2 id="验证podspec有效性"><a href="#验证podspec有效性" class="headerlink" title="验证podspec有效性"></a>验证podspec有效性</h2><p>当开发完私有库之后，把配置库，提交到私有创库，或者cocoapods的公有库仓库，流程如下</p>
-<p><strong><em>1. 本地验证仓库有效性</em></strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod lib lint --source --use-libraries --allow-warnings --verbose</div></pre></td></tr></table></figure>
-<p>其中pod lib lint 之后的参数都是可选参数</p>
-<ul>
-<li>–source：当开发私有库的时候，</li>
-<li>–use-libraries: podspec文件里面通过pod dependencies指定的依赖，是否包含静态库，当不加此参数会验证失败。因为swift开发的库，不能包含静态库，所以此参数只针对Objective-C</li>
-<li>–allow-warnings：是否忽略警告。</li>
-<li>–verbose：详细log</li>
-</ul>
-<p><strong><em>2. 提交代码</em></strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">git add .</div><div class="line">git ci -m&quot;edit commit message&quot;</div><div class="line">git tag 0.1.0</div><div class="line">git push origin master tags</div></pre></td></tr></table></figure>
-<p><strong><em>3. 推送podspec配置文件到私有库</em></strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod repo push SYSpecs [MyLib.podspec] --use-libraries --allow-warnings --verbose</div></pre></td></tr></table></figure>
-<p>其中参数与验证参数一个含义，验证的时候加了哪些可选参数，推送配置文件到私有库的时候也要加</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/01/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-01T08:24:00+08:00" content="2017-05-01">
-              2017-05-01
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1448,7 +1484,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1488,7 +1524,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
