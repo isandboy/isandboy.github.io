@@ -3,8 +3,8 @@
         "apps": [],
         "details": [
             {
-                "appID": "T8H9ZZ4FNH.com.JROOM.JRoom",
-                "paths": ["/link/*","*"]
+                "appID": "XWTMGPG8LF.com.iflytek.afterclass",
+                "paths": ["/*"]
             }
         ]
     }
