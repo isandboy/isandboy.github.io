@@ -4,7 +4,7 @@
         "details": [
             {
                 "appID": "XWTMGPG8LF.com.iflytek.afterclass",
-                "paths": ["/*", "/link/*","*"]
+                "paths": ["/*"]
             }
         ]
     }
